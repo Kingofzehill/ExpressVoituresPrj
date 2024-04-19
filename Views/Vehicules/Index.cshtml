@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Vin)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Statut)
             </th>
             <th>
@@ -54,6 +57,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vin)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Statut)
             </td>

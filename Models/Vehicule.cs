@@ -16,15 +16,17 @@ namespace ExpressVoitures.Models
         //****DataAnnotations : https://www.completecsharptutorial.com/asp-net-mvc5/data-annotation-validation-with-example-in-asp-net-mvc.php
         // Identifiant VIN du vehicule (clé primaire)
         //[Key()]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         /*
             * ’attribut DatabaseGenerated avec le paramètre None spécifie 
             * que les valeurs de clé primaire sont fournies par l’utilisateur 
             * plutôt que générées par la base de données.
-         */
+         */        
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Indiquer un code VIN"), Display(Name = "VIN"), StringLength(17, MinimumLength = 17)]
         // [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
-        public int Id { get; set; }
+        public string Vin { get; set; } = "";
 
         // ***SET ==> Private 
         // list values : Achat, Réparation à faire, Réparation en cours, Mis en vente, Vendu; Non disponible

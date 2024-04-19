@@ -107,8 +107,10 @@ namespace ExpressVoitures.Migrations
             modelBuilder.Entity("ExpressVoitures.Models.Vehicule", b =>
                 {
                     b.Property<int>("Id")
-                        .HasMaxLength(17)
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AnneeVehicule")
                         .HasColumnType("int");
@@ -150,6 +152,11 @@ namespace ExpressVoitures.Migrations
 
                     b.Property<bool>("Vendu")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasMaxLength(17)
+                        .HasColumnType("nvarchar(17)");
 
                     b.HasKey("Id");
 

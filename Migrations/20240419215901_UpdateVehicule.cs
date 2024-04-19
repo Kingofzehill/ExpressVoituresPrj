@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ExpressVoitures.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class UpdateVehicule : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -81,7 +81,9 @@ namespace ExpressVoitures.Migrations
                 name: "Vehicule",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", maxLength: 17, nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Vin = table.Column<string>(type: "nvarchar(17)", maxLength: 17, nullable: false),
                     Statut = table.Column<int>(type: "int", maxLength: 30, nullable: false),
                     Information = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Photo = table.Column<byte[]>(type: "varbinary(4000)", maxLength: 4000, nullable: true),
