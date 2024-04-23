@@ -6,21 +6,46 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Marques" asp-action="Index">Marques</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Modeles" asp-action="Index">Modèles</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Finitions" asp-action="Index">Finitions</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Reparations" asp-action="Index">Réparations</a>
+    </li>
+    <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Vehicules", new { area = "" })">
+            <button  type="submit" class="nav-link btn btn-link text-dark">Déconnexion</button>
         </form>
     </li>
 }
 else
 {
-    <li class="nav-item">
+    @*<li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    </li>*@
+    @* TD07 deactivate admin tables menu when admin connexion is OK *@
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Marques" asp-action="Index">Marques</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Modeles" asp-action="Index">Modèles</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Finitions" asp-action="Index">Finitions</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Reparations" asp-action="Index">Réparations</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Administrateur</a>
     </li>
 }
 </ul>

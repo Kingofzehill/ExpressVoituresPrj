@@ -46,9 +46,11 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// UPD06 ControllerRoute for Home to Vehicules Controller
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    //pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Vehicules}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();
