@@ -1,10 +1,10 @@
 ﻿@model ExpressVoitures.Models.Finition
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Créer";
 }
 
-<h1>Create</h1>
+<h1>Créer</h1>
 
 <h4>Finition</h4>
 <hr />
@@ -18,18 +18,18 @@
                 <span asp-validation-for="LibelleFinition" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ModeleId" class="control-label"></label>
+                <label asp-for="ModeleId" class="control-label">Finition attachée au Modèle</label>
                 <select asp-for="ModeleId" class ="form-control" asp-items="ViewBag.ModeleId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Créer" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour à la liste des Finitions</a>
 </div>
 
 @section Scripts {

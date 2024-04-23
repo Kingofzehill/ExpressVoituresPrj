@@ -1,15 +1,15 @@
 ﻿@model ExpressVoitures.Models.Vehicule
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Créer";
 }
 @* UPD002 Vehicule Create view updates
     - MisEnVente / Vendu boolean fields not displayed
     - statut = achat + readonly
 *@
-<h1>Create</h1>
+<h1>Créer</h1>
 
-<h4>Vehicule</h4>
+<h4>Voiture</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -88,14 +88,14 @@
                 <select asp-for="FinitionId" class ="form-control" asp-items="ViewBag.FinitionId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Créer" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour à la liste des Voitures</a>
 </div>
 
 @section Scripts {

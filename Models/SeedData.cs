@@ -13,7 +13,7 @@ namespace ExpressVoitures.Models
     /// Initialize datas of the ExpressVoituresContext :
     /// Marque, Modele, Finition, Reparation, Vehicule, ReparationVehicule.
     /// </summary>
-    /// <remarks>Users identites is managed in ApplicationDbContext.cs.</remarks>
+    /// <remarks>Users identites are managed in ApplicationDbContext.cs // SeedDataIdentity.cs.</remarks>
     public static class SeedData
     {
         public static void Initialize(IServiceProvider serviceProvider)
@@ -161,6 +161,7 @@ namespace ExpressVoitures.Models
                 }
 
                 // Look for any Vehicule.
+                // TD02 SeedData Vehicule
                 if (!(context.Vehicule.Any()))
                 {                
                     context.SaveChanges();

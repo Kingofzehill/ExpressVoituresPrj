@@ -23,7 +23,7 @@ namespace ExpressVoitures.Controllers
         public async Task<IActionResult> Index()
         {
             var expressVoituresContext = _context.Modele.Include(m => m.Marque);
-            return View(await expressVoituresContext.ToListAsync());
+            return View(await expressVoituresContext.OrderBy(x => x.LibelleModele).ToListAsync());
         }
 
         // GET: Modeles/Details/5
@@ -48,7 +48,8 @@ namespace ExpressVoitures.Controllers
         // GET: Modeles/Create
         public IActionResult Create()
         {
-            ViewData["MarqueId"] = new SelectList(_context.Marque, "Id", "LibelleMarque");
+            // UPD04 : alphabetical order for vizews dropdownlist
+            ViewData["MarqueId"] = new SelectList(_context.Marque.OrderBy(x=>x.LibelleMarque), "Id", "LibelleMarque");
             return View();
         }
 
@@ -59,13 +60,18 @@ namespace ExpressVoitures.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,LibelleModele,MarqueId")] Modele modele)
         {
+            // FIX02 ModelState incorrectly reference navigation property for validation
+            //      https://stackoverflow.com/questions/55115319/modelstate-errors-for-all-navigation-properties
+            // ignore navigation property
+            ModelState.Remove(nameof(Modele.Marque));
+
             if (ModelState.IsValid)
             {
                 _context.Add(modele);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MarqueId"] = new SelectList(_context.Marque, "Id", "LibelleMarque", modele.MarqueId);
+            ViewData["MarqueId"] = new SelectList(_context.Marque.OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", modele.MarqueId);
             return View(modele);
         }
 
@@ -82,7 +88,7 @@ namespace ExpressVoitures.Controllers
             {
                 return NotFound();
             }
-            ViewData["MarqueId"] = new SelectList(_context.Marque, "Id", "LibelleMarque", modele.MarqueId);
+            ViewData["MarqueId"] = new SelectList(_context.Marque.OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", modele.MarqueId);
             return View(modele);
         }
 
@@ -97,6 +103,9 @@ namespace ExpressVoitures.Controllers
             {
                 return NotFound();
             }
+
+            // ignore navigation property
+            ModelState.Remove(nameof(Modele.Marque));
 
             if (ModelState.IsValid)
             {
@@ -118,7 +127,7 @@ namespace ExpressVoitures.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MarqueId"] = new SelectList(_context.Marque, "Id", "LibelleMarque", modele.MarqueId);
+            ViewData["MarqueId"] = new SelectList(_context.Marque.OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", modele.MarqueId);
             return View(modele);
         }
 

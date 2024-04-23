@@ -22,7 +22,8 @@ namespace ExpressVoitures.Controllers
         // GET: Marques
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Marque.ToListAsync());
+            // UPD02 : marque alphabetical order
+            return View(await _context.Marque.OrderBy(x => x.LibelleMarque).ToListAsync());
         }
 
         // GET: Marques/Details/5

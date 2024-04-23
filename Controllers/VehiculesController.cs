@@ -48,7 +48,7 @@ namespace ExpressVoitures.Controllers
         // GET: Vehicules/Create        
         public IActionResult Create(int StatutDefault = 0, int AnneeVehiculeDefault = Vehicule.AnneeAchatMinimum)
         {
-            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>(), "Id", "LibelleFinition");
+            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition");
             ViewData["Statut"] = StatutDefault; // 0 = VehiculeStatuts.Achat
             ViewData["AnneeVehiculeMin"] = AnneeVehiculeDefault;
             return View();
@@ -66,6 +66,9 @@ namespace ExpressVoitures.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Statut,Information,Photo,DateAchat,PrixAchat,AnneeVehicule,MisEnVente,PrixDeVente,DateMisEnVente,Vendu,DateVente,FinitionId")] Vehicule vehicule)
         {
+            // ignore navigation property
+            ModelState.Remove(nameof(Vehicule.Finition));
+
             if (ModelState.IsValid)
             {
                 // TD Vérif si DateVente > DateMisEnVente > DateAchat + Statut OK en fonction
@@ -77,7 +80,7 @@ namespace ExpressVoitures.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>(), "Id", "LibelleFinition", vehicule.FinitionId);
+            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition", vehicule.FinitionId);
             return View(vehicule);
         }
 
@@ -94,7 +97,7 @@ namespace ExpressVoitures.Controllers
             {
                 return NotFound();
             }
-            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>(), "Id", "LibelleFinition", vehicule.FinitionId);
+            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition", vehicule.FinitionId);
             return View(vehicule);
         }
 
@@ -109,6 +112,9 @@ namespace ExpressVoitures.Controllers
             {
                 return NotFound();
             }
+
+            // ignore navigation property
+            ModelState.Remove(nameof(Vehicule.Finition));
 
             if (ModelState.IsValid)
             {
@@ -130,7 +136,7 @@ namespace ExpressVoitures.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>(), "Id", "LibelleFinition", vehicule.FinitionId);
+            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition", vehicule.FinitionId);
             return View(vehicule);
         }
 

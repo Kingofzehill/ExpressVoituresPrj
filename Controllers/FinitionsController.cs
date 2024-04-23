@@ -23,7 +23,7 @@ namespace ExpressVoitures.Controllers
         public async Task<IActionResult> Index()
         {
             var expressVoituresContext = _context.Finition.Include(f => f.Modele);
-            return View(await expressVoituresContext.ToListAsync());
+            return View(await expressVoituresContext.OrderBy(x => x.LibelleFinition).ToListAsync());
         }
 
         // GET: Finitions/Details/5
@@ -48,7 +48,7 @@ namespace ExpressVoitures.Controllers
         // GET: Finitions/Create
         public IActionResult Create()
         {
-            ViewData["ModeleId"] = new SelectList(_context.Set<Modele>(), "Id", "LibelleModele");
+            ViewData["ModeleId"] = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele");
             return View();
         }
 
@@ -59,13 +59,16 @@ namespace ExpressVoitures.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,LibelleFinition,ModeleId")] Finition finition)
         {
+            // ignore navigation property
+            ModelState.Remove(nameof(Finition.Modele));
+
             if (ModelState.IsValid)
             {
                 _context.Add(finition);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ModeleId"] = new SelectList(_context.Set<Modele>(), "Id", "LibelleModele", finition.ModeleId);
+            ViewData["ModeleId"] = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", finition.ModeleId);
             return View(finition);
         }
 
@@ -82,7 +85,7 @@ namespace ExpressVoitures.Controllers
             {
                 return NotFound();
             }
-            ViewData["ModeleId"] = new SelectList(_context.Set<Modele>(), "Id", "LibelleModele", finition.ModeleId);
+            ViewData["ModeleId"] = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", finition.ModeleId);
             return View(finition);
         }
 
@@ -97,6 +100,9 @@ namespace ExpressVoitures.Controllers
             {
                 return NotFound();
             }
+
+            // ignore navigation property
+            ModelState.Remove(nameof(Finition.Modele));
 
             if (ModelState.IsValid)
             {
@@ -118,7 +124,7 @@ namespace ExpressVoitures.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ModeleId"] = new SelectList(_context.Set<Modele>(), "Id", "LibelleModele", finition.ModeleId);
+            ViewData["ModeleId"] = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", finition.ModeleId);
             return View(finition);
         }
 

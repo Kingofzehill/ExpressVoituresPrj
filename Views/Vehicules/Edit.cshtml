@@ -1,12 +1,12 @@
 ﻿@model ExpressVoitures.Models.Vehicule
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editer";
 }
 
-<h1>Edit</h1>
+<h1>Editer</h1>
 
-<h4>Vehicule</h4>
+<h4>Voiture</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -79,14 +79,14 @@
                 <span asp-validation-for="FinitionId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Sauvegarder" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Retour à la liste des Voitures</a>
 </div>
 
 @section Scripts {

@@ -19,6 +19,17 @@ using System.ComponentModel.DataAnnotations.Schema; //pour [ForeignKey(<nom cham
  *         Entity Framework, Many-to-many relationships : https://learn.microsoft.com/en-us/ef/core/modeling/relationships/many-to-many
  *         */
 
+// Images mngt ==>
+// ***** https://www.binaryintellect.net/articles/2f55345c-1fcb-4262-89f4-c4319f95c5bd.aspx
+// *** https://dev.to/karenpayneoregon/sql-server-working-with-images-dp3
+// *** https://www.aspsnippets.com/Articles/2342/Save-Insert-Image-file-in-Database-using-Entity-Framework-in-ASPNet-MVC/
+// *** https://learn.microsoft.com/en-us/answers/questions/682240/best-practice-for-saving-image-in-database
+// https://stackoverflow.com/questions/11208229/image-data-type-in-sql-server-comapct-4-code-first-entity-framewwork-5
+// ** https://www.c-sharpcorner.com/UploadFile/0c1bb2/uploading-images-to-database-using-Asp-Net-C-Sharp/
+// https://learn.microsoft.com/fr-fr/dotnet/api/system.windows.forms.datavisualization.charting.imageannotation?view=netframework-4.8.1
+// ** https://stackoverflow.com/questions/73680444/how-can-i-save-image-file-to-sql-database-with-net-core-and-ef
+// https://www.codeproject.com/Articles/658522/Storing-Images-in-SQL-Server-using-EF-and-ASP-NET
+
 /// <summary>
 /// Vehicule Data Model Class
 /// </summary>
@@ -46,17 +57,7 @@ namespace ExpressVoitures.Models
 
         // ***TOCHECK ==> MaxLength(4000) for byte[] type could be mapped to image SQL type
         [DataType("image"), MaxLength(4000, ErrorMessage = "l'image est limitée à 4000 bytes")]
-        public byte[]? Photo { get; set; }
-        // Images mngt ==>
-        // ***** https://www.binaryintellect.net/articles/2f55345c-1fcb-4262-89f4-c4319f95c5bd.aspx
-        // *** https://dev.to/karenpayneoregon/sql-server-working-with-images-dp3
-        // *** https://www.aspsnippets.com/Articles/2342/Save-Insert-Image-file-in-Database-using-Entity-Framework-in-ASPNet-MVC/
-        // *** https://learn.microsoft.com/en-us/answers/questions/682240/best-practice-for-saving-image-in-database
-        // https://stackoverflow.com/questions/11208229/image-data-type-in-sql-server-comapct-4-code-first-entity-framewwork-5
-        // ** https://www.c-sharpcorner.com/UploadFile/0c1bb2/uploading-images-to-database-using-Asp-Net-C-Sharp/
-        // https://learn.microsoft.com/fr-fr/dotnet/api/system.windows.forms.datavisualization.charting.imageannotation?view=netframework-4.8.1
-        // ** https://stackoverflow.com/questions/73680444/how-can-i-save-image-file-to-sql-database-with-net-core-and-ef
-        // https://www.codeproject.com/Articles/658522/Storing-Images-in-SQL-Server-using-EF-and-ASP-NET
+        public byte[]? Photo { get; set; }        
 
 // ***SET ==> Private 
         [Required(ErrorMessage = "Saisir date d'achat"), Display(Name = "Date d'achat")]
@@ -74,18 +75,6 @@ namespace ExpressVoitures.Models
         [Required(ErrorMessage = "Saisir année de mise en circulation"), Display(Name = "Année véhicule")]        
         [Range(1990, 2024, ErrorMessage = "La valeur pour {0} doit être entre {1} et {2}")]        
         public int AnneeVehicule { get; set; } = AnneeAchatMinimum;
-        /*[DefaultValue(AnneeAchatMinimum)]
-        public int AnneeVehicule
-        {
-            get
-            {
-                return _Année;
-            }
-            set
-            {
-                _Année = value;
-            }
-        }*/
 
         // MisEnVente (bool) définit l'accessibilité aux informations PrixDeVente et Date de mise Vente
         public bool MisEnVente { get; set; } = false;
@@ -105,7 +94,7 @@ namespace ExpressVoitures.Models
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]        
         public DateTime? DateVente { get; set; }
 
-        [Display(Name = "Finition")]
+        //[Display(Name = "Finition")]
         public int FinitionId { get; set; } // Required foreign key property
         public virtual Finition Finition { get; set; } = null!; // Required reference navigation to principal                                                                        
 

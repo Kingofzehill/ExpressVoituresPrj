@@ -16,8 +16,10 @@ namespace ExpressVoitures.Models
 
         [Required(ErrorMessage = "Saisir un modèle"), Display(Name = "Modèle"), StringLength(50)]
 // ***SET ==>  [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
-        public string LibelleModele { get; set; }
+        public string LibelleModele { get; set; } = "";
 
+        // UPD03 : display(name for foreignKeys 
+        //[Display(Name = "Marque")]
         public int MarqueId { get; set; } // Required foreign key property
         public Marque Marque { get; set; } = null!; // Required reference navigation to principal
 

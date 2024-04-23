@@ -1,13 +1,13 @@
 ﻿@model ExpressVoitures.Models.Vehicule
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Détails";
 }
 
-<h1>Details</h1>
+<h1>Détails</h1>
 
 <div>
-    <h4>Vehicule</h4>
+    <h4>Voitures</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -91,6 +91,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editer</a> |
+    <a asp-action="Index">Retour à la liste des Voitures</a>
 </div>
