@@ -45,12 +45,19 @@ namespace ExpressVoitures.Controllers
             return View(vehicule);
         }
 
-        // GET: Vehicules/Create
-        public IActionResult Create()
+        // GET: Vehicules/Create        
+        public IActionResult Create(int StatutDefault = 0, int AnneeVehiculeDefault = Vehicule.AnneeAchatMinimum)
         {
             ViewData["FinitionId"] = new SelectList(_context.Set<Finition>(), "Id", "LibelleFinition");
+            ViewData["Statut"] = StatutDefault; // 0 = VehiculeStatuts.Achat
+            ViewData["AnneeVehiculeMin"] = AnneeVehiculeDefault;
             return View();
         }
+        /*public IActionResult Create()
+        {
+            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>(), "Id", "LibelleFinition");            
+            return View();
+        }*/
 
         // POST: Vehicules/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -61,6 +68,11 @@ namespace ExpressVoitures.Controllers
         {
             if (ModelState.IsValid)
             {
+                // TD Vérif si DateVente > DateMisEnVente > DateAchat + Statut OK en fonction
+                // TD définir MisEnVente true si DateMisEnVente et PrixVente définis
+                // TD définir Vendu true si DateVente défini
+                // Display validation errors in view (summary) https://stackoverflow.com/questions/61153326/display-model-state-errors-in-view
+
                 _context.Add(vehicule);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

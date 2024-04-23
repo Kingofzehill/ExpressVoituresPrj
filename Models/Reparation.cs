@@ -1,21 +1,20 @@
-﻿using Microsoft.Extensions.Hosting;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ExpressVoitures.Models
 {
+    /// <summary>
+    /// Reparation Data Model Class.
+    /// </summary>
+    /// <remarks>ForeignKey with Marque (Many To One).</remarks>
+    /// <remarks>Assocition with Vehicule (Many to Many (ReparationVehicule)).</remarks>
     public class Reparation
     {
-        // IdReparation (clé primaire)
-        //[Key()]
-        //[Required, Display(Name = "Id")]
         public int Id { get; set; }
 
         [Required, Display(Name = "Réparation"), StringLength(50)]
-        // ***SET ==>  [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
+// ***SET ==>  [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
         public string? LibelleReparation { get; set; }
 
-        // Navigation avec ReparationsVehicule        
         public List<Vehicule> Vehicules { get; } = [];
-        //public List<ReparationVehicule> ReparationVehicules { get; } = [];
     }
 }
