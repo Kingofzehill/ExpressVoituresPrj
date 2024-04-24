@@ -75,6 +75,7 @@ namespace ExpressVoitures.Controllers
                 // TD définir MisEnVente true si DateMisEnVente et PrixVente définis
                 // TD définir Vendu true si DateVente défini
                 // Display validation errors in view (summary) https://stackoverflow.com/questions/61153326/display-model-state-errors-in-view
+                vehicule.DateMisAJour = DateTime.Now;
 
                 _context.Add(vehicule);
                 await _context.SaveChangesAsync();
@@ -120,6 +121,8 @@ namespace ExpressVoitures.Controllers
             {
                 try
                 {
+                    vehicule.DateMisAJour = DateTime.Now;
+
                     _context.Update(vehicule);
                     await _context.SaveChangesAsync();
                 }

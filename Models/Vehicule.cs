@@ -43,7 +43,7 @@ namespace ExpressVoitures.Models
         public const int AnneeAchatMinimum = 1990;
         
         public int Id { get; set; }
-
+        
         [Required(ErrorMessage = "Saisir code VIN"), Display(Name = "VIN"), StringLength(17, MinimumLength = 17)]
 // ***SET ==> [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
         public string Vin { get; set; } = "";
@@ -115,7 +115,7 @@ namespace ExpressVoitures.Models
         [Display(Name = "Actualisé le"), DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateMisAJour { get; set; } = DateTime.Now;
-
+        
         [DataType(DataType.Currency), Precision(7, 2), Range(1, 99999, ErrorMessage = "Saisir une marge au format XXXXX,XX")]
         public decimal Marge { get; set; } = 500.00M;
 

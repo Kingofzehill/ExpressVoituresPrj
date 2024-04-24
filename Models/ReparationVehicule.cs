@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Humanizer;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ExpressVoitures.Models
 {
@@ -16,9 +18,10 @@ namespace ExpressVoitures.Models
 
         public int ReparationsId { get; set; }
 
-// ***SET ==> Private 
+        // ***SET ==> Private 
         [Display(Name = "Coût réparation")]
-        [DataType(DataType.Currency), Range(1, 9999), Precision(4, 2), RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un prix au format XXXX,XX")]
+        //UPD07 update property ReparationVehicule.CoutReparation ==> from Precision(4, 2) to Precision(7, 2)
+        [DataType(DataType.Currency), Range(1, 99999), Precision(7, 2), RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un prix au format XXXX,XX")]
         public decimal CoutReparation { get; set; }
     }
 }
