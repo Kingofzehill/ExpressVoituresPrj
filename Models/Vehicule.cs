@@ -65,10 +65,16 @@ namespace ExpressVoitures.Models
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]        
         public DateTime DateAchat { get; set; }
 
-        // ***SET ==> Private 
+// ***SET ==> Private 
         [Required(ErrorMessage = "Saisir Prix d'achat")]
         [Display(Name = "Prix d'achat")]
-        [DataType(DataType.Currency), Range(1, 99999), Precision(5, 2), RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un prix au format XXXX,XX")]
+        // FIX03 : update precision from (2, 2) to (7, 2) as Precision(p, s) : p means both left and right of the decimal
+        [DataType(DataType.Currency), Precision(7, 2), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]
+        //      Precision(p, s) : p means both left and right of the decimal
+        //[DataType(DataType.Currency), Precision(5, 2), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]
+        //[Column(TypeName = "decimal(5, 2)")]
+        //[RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid price")]
+        //, RegularExpression(@"^[0-9]+((\,)[0-9]+)*$"
         //FIX004 : add format to date fields        
         public decimal PrixAchat { get; set; }       
 
@@ -81,18 +87,37 @@ namespace ExpressVoitures.Models
 
 // ***SET ==> Private
         [Display(Name = "Prix de vente")]
-        [DataType(DataType.Currency), Range(1, 99999), Precision(5, 2), RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un prix au format XXXXX,XX")]
+        [DataType(DataType.Currency), Precision(7, 2), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]
+        //Precision(p, s) : p means both left and right of the decimal
+        //[DataType(DataType.Currency), Precision(5, 2), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]
+        //[Column(TypeName = "decimal(5, 2)")]
+        //[RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid price")]
+        //, RegularExpression(@"^[0-9]+((\,)[0-9]+)*$"
+        //[RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid price")]
+        //, RegularExpression(@"^[0-9]+((\,)[0-9]+)*$
         public decimal? PrixDeVente { get; set; }
+
         [Display(Name = "Mis en vente"), DataType(DataType.Date)]
-        
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateMisEnVente { get; set; }
 
         // Vehicule vendu, Vendu (bool) définit l'accessibilité à l'information Date vente
         public bool Vendu { get; set; } = false; 
+
         [Display(Name = "Date vente"), DataType(DataType.Date)]        
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]        
         public DateTime? DateVente { get; set; }
+
+        // TD11 : Vehicule class, add DateMisAJour & Marge to class properties
+        //      / Filter index by DateMisAjour
+        //      / Add Marge to Edit view
+        // FIX04 : Vehicule class, add DateMisAJour & Marge
+        [Display(Name = "Actualisé le"), DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime? DateMisAJour { get; set; } = DateTime.Now;
+
+        [DataType(DataType.Currency), Precision(7, 2), Range(1, 99999, ErrorMessage = "Saisir une marge au format XXXXX,XX")]
+        public decimal Marge { get; set; } = 500.00M;
 
         //[Display(Name = "Finition")]
         public int FinitionId { get; set; } // Required foreign key property

@@ -12,16 +12,40 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Photo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Photo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Statut)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Statut)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PrixDeVente)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrixDeVente)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Vin)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Vin)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Statut)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AnneeVehicule)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Statut)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AnneeVehicule)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Finition)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Finition.LibelleFinition)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Information)
@@ -29,11 +53,17 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Information)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Photo)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateMisEnVente)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Photo)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateMisEnVente)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateVente)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateVente)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.DateAchat)
@@ -47,12 +77,7 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PrixAchat)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AnneeVehicule)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AnneeVehicule)
-        </dd>
+        @*
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.MisEnVente)
         </dt>
@@ -60,35 +85,12 @@
             @Html.DisplayFor(model => model.MisEnVente)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PrixDeVente)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PrixDeVente)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateMisEnVente)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateMisEnVente)
-        </dd>
-        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Vendu)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Vendu)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateVente)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateVente)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Finition)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Finition.LibelleFinition)
-        </dd>
+        @**@
     </dl>
     
     <form asp-action="Delete">

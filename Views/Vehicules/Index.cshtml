@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<ExpressVoitures.Models.Vehicule>
 
 @{
-    ViewData["Title"] = "Liste";
+    ViewData["Title"] = "Accueil";
 }
 
-<h1>Liste</h1>
+@*<h1>Liste</h1>*@
 
 <p>
     <a asp-action="Create">Créer une nouvelle Voiture</a>
@@ -13,17 +13,32 @@
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Photo)
+            </th>
+            @* TD09 Vehicule index : Statut & Vin for admin only*@
+            <th>
+                @Html.DisplayNameFor(model => model.Statut)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Vin)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Statut)
+                @Html.DisplayNameFor(model => model.AnneeVehicule)
+            </th>
+            @* TD08 Vehicule index : add Marque et Modele*@
+            <th>
+                @Html.DisplayNameFor(model => model.Finition)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Information)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Photo)
+                @Html.DisplayNameFor(model => model.PrixDeVente)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateMisEnVente)
+            </th>         
+            @*
             <th>
                 @Html.DisplayNameFor(model => model.DateAchat)
             </th>
@@ -31,16 +46,7 @@
                 @Html.DisplayNameFor(model => model.PrixAchat)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AnneeVehicule)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.MisEnVente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrixDeVente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateMisEnVente)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Vendu)
@@ -48,9 +54,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.DateVente)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Finition)
-            </th>
+            *@                   
             <th></th>
         </tr>
     </thead>
@@ -58,28 +62,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Vin)
+                @Html.DisplayFor(modelItem => item.Photo)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Statut)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Information)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Photo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateAchat)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrixAchat)
+                @Html.DisplayFor(modelItem => item.Vin)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AnneeVehicule)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MisEnVente)
+                @Html.DisplayFor(modelItem => item.Finition.LibelleFinition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Information)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PrixDeVente)
@@ -87,16 +85,26 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateMisEnVente)
             </td>
+            @*
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAchat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrixAchat)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.MisEnVente)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Vendu)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateVente)
             </td>
+            *@
             <td>
-                @Html.DisplayFor(modelItem => item.Finition.LibelleFinition)
-            </td>
-            <td>
+                @* TD10 Vehicule index, admin only : Editer & Supprimer actions *@
                 <a asp-action="Edit" asp-route-id="@item.Id">Editer</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Détails</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
