@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ExpressVoitures.Data;
 using ExpressVoitures.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpressVoitures.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ModelesController : Controller
     {
         private readonly ExpressVoituresContext _context;

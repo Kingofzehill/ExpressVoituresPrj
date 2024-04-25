@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ExpressVoitures.Data;
 using ExpressVoitures.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpressVoitures.Controllers
 {
@@ -46,6 +47,7 @@ namespace ExpressVoitures.Controllers
         }
 
         // GET: Vehicules/Create        
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(int StatutDefault = 0, int AnneeVehiculeDefault = Vehicule.AnneeAchatMinimum)
         {
             ViewData["FinitionId"] = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition");
@@ -62,6 +64,7 @@ namespace ExpressVoitures.Controllers
         // POST: Vehicules/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Statut,Information,Photo,DateAchat,PrixAchat,AnneeVehicule,MisEnVente,PrixDeVente,DateMisEnVente,Vendu,DateVente,FinitionId")] Vehicule vehicule)
@@ -86,6 +89,7 @@ namespace ExpressVoitures.Controllers
         }
 
         // GET: Vehicules/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -105,6 +109,7 @@ namespace ExpressVoitures.Controllers
         // POST: Vehicules/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Statut,Information,Photo,DateAchat,PrixAchat,AnneeVehicule,MisEnVente,PrixDeVente,DateMisEnVente,Vendu,DateVente,FinitionId")] Vehicule vehicule)
@@ -144,6 +149,7 @@ namespace ExpressVoitures.Controllers
         }
 
         // GET: Vehicules/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -163,6 +169,7 @@ namespace ExpressVoitures.Controllers
         }
 
         // POST: Vehicules/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ExpressVoitures.Data;
 using ExpressVoitures.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpressVoitures.Controllers
 {
+    // UPD09 : check user connected with admin role for accessing controller / controller methods reserved to administrator
+    [Authorize(Roles = "Admin")]
     public class MarquesController : Controller
     {
         private readonly ExpressVoituresContext _context;

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ExpressVoitures.Data;
 using ExpressVoitures.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpressVoitures.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class FinitionsController : Controller
     {
         private readonly ExpressVoituresContext _context;
@@ -85,6 +87,9 @@ namespace ExpressVoitures.Controllers
             {
                 return NotFound();
             }
+            // TD14 : FinitionView, add MarquesList which filter ModeleList
+            var MarqueId = finition.Modele.Marque.Id;
+            ViewData["Marques"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", MarqueId);
             ViewData["ModeleId"] = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", finition.ModeleId);
             return View(finition);
         }
