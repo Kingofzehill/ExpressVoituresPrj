@@ -21,5 +21,16 @@ namespace ExpressVoitures.Models
         public virtual Modele Modele { get; set; } = null!; // Required reference navigation to principal
         
         public virtual ICollection<Vehicule> Vehicules { get; set; } = new List<Vehicule>(); // Collection navigation containing dependents
+
+        /*  selectList for modelView
+            //[NotMapped] Attribute in Properties
+            //      For the following Property, no database column will be created 
+            //      https://dotnettutorials.net/lesson/notmapped-attribute-in-entity-framework-core/#:~:text=The%20NotMapped%20Attribute%20in%20Entity,accessors)%20in%20an%20entity%20class.
+            
+            [NotMapped]
+            public SelectList Marques { get; set; }  
+            [NotMapped]
+            public SelectList Modeles { get; set; }           
+         */
     }
 }

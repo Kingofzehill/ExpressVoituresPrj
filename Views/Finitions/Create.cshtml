@@ -8,18 +8,28 @@
 
 <h4>Finition</h4>
 <hr />
-<div class="row">
+<div id="dropDownListdiv" class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger">
+            </div>
             <div class="form-group">
                 <label asp-for="LibelleFinition" class="control-label"></label>
                 <input asp-for="LibelleFinition" class="form-control" />
                 <span asp-validation-for="LibelleFinition" class="text-danger"></span>
             </div>
+            @*UPD11 (view) cascading dropdownlist Marque / Modele*@
+            <div class="form-group">                
+                <label for="Marque">Marque</label><br>                                                
+                @Html.DropDownList("MarqueId", (SelectList)ViewData["MarqueId"], "Sélectionner...", new { @class = "form-control" })
+            </div>
             <div class="form-group">
                 <label asp-for="ModeleId" class="control-label">Finition attachée au Modèle</label>
-                <select asp-for="ModeleId" class ="form-control" asp-items="ViewBag.ModeleId"></select>
+                <select asp-for="ModeleId" class ="form-control" asp-items="ViewBag.ModeleId">
+                    <option value="0">Sélectionner...</option>
+                </select>
+                @*UPD11 (view) cascading dropdownlist Marque / Modele*@
+                <span asp-validation-for="ModeleId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Créer" class="btn btn-primary" />
@@ -32,6 +42,39 @@
     <a asp-action="Index">Retour à la liste des Finitions</a>
 </div>
 
+@*UPD11 (view) cascading dropdownlist Marque / Modele*@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $("#dropDownListdiv").on("change", "select", function () {
+                var value = $(this).val();
+                var id = $(this).attr("id");
+                $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
+                    switch (id) {
+                        case "MarqueId":
+                            //debugger;
+                            PopulateDropDown("#ModeleId", data);                            
+                            break;
+                        case "ModeleId":
+                            //debugger;
+                            PopulateDropDown("#MarqueId", data);                            
+                            break;
+                    }
+                });
+            });
+        });
+        function PopulateDropDown(dropDownId, list) {
+            $(dropDownId).empty();
+            $(dropDownId).append("<option>Sélectionner...</option>");
+            //debugger;
+            $.each(list, function (index, row) {
+                if (index == 0) {
+                    $(dropDownId).append("<option value='" + row.value + "' selected='selected'>" + row.text + "</option>");
+                } else {
+                    $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>");
+                }
+            });
+        }
+    </script>
 }

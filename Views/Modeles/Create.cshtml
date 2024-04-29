@@ -19,7 +19,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="MarqueId" class="control-label">Modèle attaché à la marque</label>
-                <select asp-for="MarqueId" class ="form-control" asp-items="ViewBag.MarqueId"></select>
+                <select asp-for="MarqueId" class ="form-control" asp-items="ViewBag.MarqueId">
+                    <option value="0">Sélectionner Marque...</option>
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Créer" class="btn btn-primary" />

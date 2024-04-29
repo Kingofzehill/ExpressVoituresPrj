@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ExpressVoitures.Data;
 using ExpressVoitures.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ExpressVoitures.Controllers
 {
@@ -50,8 +52,37 @@ namespace ExpressVoitures.Controllers
         // GET: Finitions/Create
         public IActionResult Create()
         {
+            // TD14 cascading dropdownlist Marque / Modele            
+            // UPD11.1 (controller create) cascading dropdownlist Marque / Modele                
+            ViewData["MarqueId"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque");
             ViewData["ModeleId"] = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele");
             return View();
+        }
+
+        /// <summary>
+        /// setDropDrownList Method
+        /// Cascading DropDrownLists Marques / Modeles for Modele View
+        /// </summary>
+        /// <remarks></remarks>
+        [HttpPost]
+        public JsonResult setDropDrownList(string type, int value)
+        {
+            switch (type)
+            {
+                case "MarqueId":
+                    //Select Modeles for the selectect MarqueId
+                    var modelesList = new SelectList(_context.Set<Modele>().Where(m => m.MarqueId == value).OrderBy(x => x.LibelleModele), "Id", "LibelleModele");
+                    ViewData["ModeleId"] = modelesList;
+                    return Json(modelesList);
+                case "ModeleId":                                        
+                    //Select Marques for the selected ModeleId
+                    var MarqueId = _context.Modele.Single(c => c.Id == value).MarqueId;
+                    var marquesList = new SelectList(_context.Set<Marque>().Where(m => m.Id == MarqueId).OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque");
+                    ViewData["MarqueId"] = marquesList;
+                    return Json(marquesList);
+                default:
+                    return Json(new SelectList(null));
+            }            
         }
 
         // POST: Finitions/Create
@@ -61,15 +92,22 @@ namespace ExpressVoitures.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,LibelleFinition,ModeleId")] Finition finition)
         {
-            // ignore navigation property
+            // FIX6 finition : ignore navigation property on create validation
             ModelState.Remove(nameof(Finition.Modele));
-
+            // UPD11.3 Fintion update model validation for managing "Selectionner" default list options
+            if (finition.ModeleId == 0) // ModeleId == 0 for "Sélectionner..." option
+            {
+                ModelState.AddModelError("ModeleId", "Veuillez sélectionner le Modèle de la Finition.");
+            }
+            
             if (ModelState.IsValid)
             {
                 _context.Add(finition);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            
+            ViewData["MarqueId"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque");
             ViewData["ModeleId"] = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", finition.ModeleId);
             return View(finition);
         }
@@ -88,8 +126,8 @@ namespace ExpressVoitures.Controllers
                 return NotFound();
             }
             // TD14 : FinitionView, add MarquesList which filter ModeleList
-            var MarqueId = finition.Modele.Marque.Id;
-            ViewData["Marques"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", MarqueId);
+            //var MarqueId = finition.Modele.Marque.Id;
+            //ViewData["MarqueId"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", MarqueId);
             ViewData["ModeleId"] = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", finition.ModeleId);
             return View(finition);
         }
