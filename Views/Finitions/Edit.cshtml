@@ -4,11 +4,11 @@
     ViewData["Title"] = "Editer";
 }
 
-<h1>Editer</h1>
+<h1>Editer Finition</h1>
 
-<h4>Finition</h4>
+@* <h4>Editer</h4> *@
 <hr />
-<div class="row">
+<div id="dropDownListdiv" class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -18,9 +18,23 @@
                 <input asp-for="LibelleFinition" class="form-control" />
                 <span asp-validation-for="LibelleFinition" class="text-danger"></span>
             </div>
+            @*UPD11 (view) cascading dropdownlist Marque / Modele*@
             <div class="form-group">
-                <label asp-for="ModeleId" class="control-label">Finition attachée au Modèle</label>
-                <select asp-for="ModeleId" class="form-control" asp-items="ViewBag.ModeleId"></select>
+                <label for="Marque">Filtrer les Modèles par Marque :</label><br>
+                @* @Html.DropDownList("Marque", (SelectList)ViewData["Marque"], "Sélectionner...", new { @class = "form-control" }) *@
+                @{
+                    //var MarqueDefault = ViewData["MarqueDefault"] as string;
+                    var marqueSelectList = (SelectList)ViewData["Marque"];
+                    List<SelectListItem> marqueSelectListItems = marqueSelectList.ToList();
+                    marqueSelectListItems.Insert(0, (new SelectListItem { Text = "Sélectionner...", Value = "0", Selected = false }));
+                }
+                @Html.DropDownList("Marque", marqueSelectListItems, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label asp-for="ModeleId" class="control-label">Finition du Modèle</label>
+                <select asp-for="ModeleId" class="form-control" asp-items="ViewBag.ModeleId">
+                    <option value="0">Sélectionner...</option>
+                </select>
                 <span asp-validation-for="ModeleId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,4 +50,37 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $("#dropDownListdiv").on("change", "select", function () {
+                var value = $(this).val();
+                var id = $(this).attr("id");
+                //debugger;
+                $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
+                    switch (id) {
+                        case "Marque":
+                            //debugger;
+                            PopulateDropDown("#ModeleId", data);                            
+                            break;
+                        case "ModeleId":
+                            //debugger;
+                            PopulateDropDown("#Marque", data);                            
+                            break;
+                    }
+                });
+            });
+        });
+        function PopulateDropDown(dropDownId, list) {
+            $(dropDownId).empty();
+            $(dropDownId).append("<option>Sélectionner...</option>");
+            //debugger;
+            $.each(list, function (index, row) {
+                if (index == 0) {
+                    $(dropDownId).append("<option value='" + row.value + "' selected='selected'>" + row.text + "</option>");
+                } else {
+                    $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>");
+                }
+            });
+        }
+    </script>
 }

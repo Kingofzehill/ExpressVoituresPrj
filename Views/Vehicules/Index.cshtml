@@ -4,7 +4,7 @@
     ViewData["Title"] = "Accueil";
 }
 
-@*<h1>Liste</h1>*@
+@*<h1>Liste des Voitures</h1>*@
 
 <p>
     @*UPD09.1 : check user connected with admin role for actions or informations in Views reserved for admin*@
@@ -66,7 +66,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Photo)
@@ -127,6 +127,6 @@
                 }                    
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>
