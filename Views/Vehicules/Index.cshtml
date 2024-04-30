@@ -9,8 +9,8 @@
 <p>
     @*UPD09.1 : check user connected with admin role for actions or informations in Views reserved for admin*@
     @if (User.IsInRole("Admin"))
-    {
-        <a asp-action="Create">Créer une nouvelle Voiture</a>
+    {        
+        <a asp-action="Create" type="button" class="btn btn-outline-primary btn-sm">Créer une nouvelle Voiture</a>
     }
 </p>
 <table class="table">
@@ -117,13 +117,13 @@
                 @* TD10 Vehicule index, admin only : Editer & Supprimer actions *@
                 @if (User.IsInRole("Admin")) 
                 {
-                    <a asp-action="Edit" asp-route-id="@item.Id">Editer |</a>
-                    <a asp-action="Details" asp-route-id="@item.Id">Détails |</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">Détails</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">Supprimer</a>
                 }
                 else
                 {
-                    <a asp-action="Details" asp-route-id="@item.Id">Détails</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">Détails</a>
                 }                    
             </td>
         </tr>

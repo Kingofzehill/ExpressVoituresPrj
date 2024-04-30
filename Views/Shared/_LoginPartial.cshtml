@@ -5,25 +5,26 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a class="nav-link text-light" asp-area="" asp-controller="Marques" asp-action="Index">Marques</a>
+    <li class="nav-item">        
+        <a class="btn btn-outline-light" asp-area="" asp-controller="Marques" asp-action="Index">Marques</a>        
     </li>
     <li class="nav-item">
-        <a class="nav-link text-light" asp-area="" asp-controller="Modeles" asp-action="Index">Modèles</a>
+        &nbsp;&nbsp;&nbsp;<a class="btn btn-outline-light" asp-area="" asp-controller="Modeles" asp-action="Index">Modèles</a>        
+    </li>
+    <li class="nav-item">        
+        &nbsp;&nbsp;&nbsp;<a class="btn btn-outline-light" asp-area="" asp-controller="Finitions" asp-action="Index">Finitions</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-light" asp-area="" asp-controller="Finitions" asp-action="Index">Finitions</a>
+        &nbsp;&nbsp;&nbsp;<a class="btn btn-outline-light" asp-area="" asp-controller="Reparations" asp-action="Index">Réparations</a>        
     </li>
     <li class="nav-item">
-        <a class="nav-link text-light" asp-area="" asp-controller="Reparations" asp-action="Index">Réparations</a>
-    </li>
-    <li class="nav-item">
-        <a  class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity?.Name</a>
+        <a  class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Admin: @User.Identity?.Name</a>
             @* <span class="op-5 user-email">@User.FindFirstValue(ClaimTypes.Role)  </span> *@
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Vehicules", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-light">Déconnexion</button>
+                @* <button type="submit" class="nav-link btn btn-link text-light">Déconnexion</button> *@
+                <button type="submit" class="btn btn-outline-dark">Déconnexion</button>                
         </form>
     </li>
 }
