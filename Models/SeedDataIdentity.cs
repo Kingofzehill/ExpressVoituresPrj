@@ -15,8 +15,8 @@ namespace ExpressVoitures.Models
     /// <remarks>Application datas are managed in ExpressVoituresContext.cs // SeedData.cs.</remarks>
     public static class SeedDataIdentity
     {
-        private const string AdminUser = "Admin";
-        private const string AdminPassword = "Password123*";
+        //private const string AdminUser = "Admin";
+        //private const string AdminPassword = "Password123*";
 
         /*public static async Task EnsurePopulated(IApplicationBuilder app)
         {

@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ExpressVoitures.styles.css" asp-append-version="true" />
+    @* UPD012 Boostrap datatable for Search text box and pages navigation into index results*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css" />    
 </head>
 <body>
     <header>
@@ -68,20 +71,58 @@
             </nav>
         }
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
+    @* UPD012 Boostrap datatable for Search text box and pages navigation into index results
+            Add Div class="page-wrapper" with the footer in ==> avoid footer being overwrites by datatables script.
+    *@
+    <div class="page-wrapper">
         <div class="container">
-            &copy; @DateTime.Now.Year - Express Voitures - .NET 8@* - <a asp-area="" asp-controller="Home" asp-action="Privacy">Politique de confidentialité</a>*@
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
         </div>
-    </footer>
+
+        <footer class="footer text-center">
+            <div class="container">
+                &copy; @DateTime.Now.Year - Express Voitures - .NET 8@* - <a asp-area="" asp-controller="Home" asp-action="Privacy">Politique de confidentialité</a>*@
+            </div>
+        </footer>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    @* UPD012 Boostrap datatable for Search text box and pages navigation into index results
+            https://datatables.net/examples/styling/bootstrap5.html
+
+            CSS :
+                https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css
+                https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css
+            Javascript :
+                https://code.jquery.com/jquery-3.7.1.js
+                https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js
+                https://cdn.datatables.net/2.0.5/js/dataTables.js
+                https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js
+    *@
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+
+    @* UPD012 Boostrap datatable : format datatables *@
+    <script>
+        $(function () {
+            $('.table').DataTable();
+            $(".datepicker").datepicker({
+                dateFormat: "yy-mm-dd"
+            });
+        });
+        @* UPD012 Boostrap datatable french support *@
+        $.extend(true, $.fn.dataTable.defaults, {
+            language: {
+                url: '//cdn.datatables.net/plug-ins/2.0.5/i18n/fr-FR.json'
+            },
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
