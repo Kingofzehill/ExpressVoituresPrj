@@ -34,7 +34,8 @@ using System.ComponentModel.DataAnnotations.Schema; //pour [ForeignKey(<nom cham
 /// Vehicule Data Model Class
 /// </summary>
 /// <remarks>ForeignKey with Finition (One to Many).</remarks>
-/// <remarks>Assocition with Reparation (Many to Many (ReparationVehicule)).</remarks>
+/// <remarks>Association with Reparation (Many to Many (ReparationVehicule)).</remarks>
+/// <remarks>Association with Image (One to One).</remarks>
 namespace ExpressVoitures.Models
 {
     public class Vehicule
@@ -109,6 +110,6 @@ namespace ExpressVoitures.Models
         public List<Reparation> Reparations { get; } = [];
 
         //UPD13 image support (vehicule), navigation property to image
-        public virtual Image? Photo { get; set; }
+        public virtual Image? Image { get; set; } //navigation property for 1/1 relationship with Image(CHILD)
     }
 }

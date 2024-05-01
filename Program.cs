@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ExpressVoitures.Models;
-using Microsoft.Extensions.DependencyInjection;
-using static System.Formats.Asn1.AsnWriter;
+using ExpressVoitures.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ExpressVoituresContext>(options =>
@@ -20,6 +19,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>() //UserIdentity mngt
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+// UPD13.3 dependency injections for PathService / ImageService
+builder.Services.AddSingleton<PathService>();
+builder.Services.AddSingleton<ImageService>();
 
 var app = builder.Build();
 

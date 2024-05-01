@@ -16,9 +16,9 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Photo)
-            </th>
+            </th> *@
             @* TD09 Vehicule index : Statut & Vin for admin only*@
             @if (User.IsInRole("Admin"))
             {
@@ -68,9 +68,9 @@
     <tbody>
         @foreach (var item in Model) {
         <tr>
-            <td>
+            @* <td>
                 @Html.DisplayFor(modelItem => item.Photo)
-            </td>
+            </td> *@
             @if (User.IsInRole("Admin"))
             {
                 <td>
@@ -123,7 +123,7 @@
                 }
                 else
                 {
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">Détails</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">Détails</a>
                 }                    
             </td>
         </tr>

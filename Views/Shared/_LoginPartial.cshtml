@@ -33,24 +33,14 @@ else
     @*<li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
     </li>*@
-    @* TD07 deactivate admin tables menu when admin connexion is OK *@
-    @if (User.IsInRole("Admin"))
-    {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Marques" asp-action="Index">Marques</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Modeles" asp-action="Index">Modèles</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Finitions" asp-action="Index">Finitions</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Reparations" asp-action="Index">Réparations</a>
-        </li>
-    }
-    <li class="nav-item">
+    @* <li class="nav-item">
         <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Connexion</a>
+    </li> *@
+    <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Index", "Vehicules", new { area = "" })">
+                @* <button type="submit" class="nav-link btn btn-link text-light">Déconnexion</button> *@
+                <button type="submit" class="btn btn-primary">Connexion</button>
+        </form>
     </li>
 }
 </ul>

@@ -41,9 +41,10 @@ namespace ExpressVoitures.Data
         public DbSet<ExpressVoitures.Models.Marque> Marque { get; set; } = default!;
         public DbSet<ExpressVoitures.Models.Modele> Modele { get; set; } = default!;
         public DbSet<ExpressVoitures.Models.Reparation> Reparation { get; set; } = default!;
-
         //UPD06 add ReparationVehicule dbset (no dedicated controller // View)
         //  https://learn.microsoft.com/en-us/aspnet/core/data/ef-mvc/complex-data-model?view=aspnetcore-8.0#composite-key
         public DbSet<ExpressVoitures.Models.ReparationVehicule> ReparationVehicule { get; set; } = default!;
+        //UPD13 image support (dbset)
+        public DbSet<Image> Images { get; set; }
     }
 }
