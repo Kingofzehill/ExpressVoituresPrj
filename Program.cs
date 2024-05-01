@@ -47,13 +47,13 @@ using (var scope = app.Services.CreateScope())
             UserName = "jacques@expressvoitures.fr",
             Email = "jacques@expressvoitures.fr",
         };
-        Console.WriteLine("admin user creation...");
+        //Console.WriteLine("admin user creation...");
 
         var admin = await userManager.CreateAsync(adminUser, "Admin@123");
         if (admin.Succeeded)
         {
             await userManager.AddToRoleAsync(adminUser, "Admin");
-            Console.WriteLine("Admin user created {0}", adminUser.UserName);
+            //Console.WriteLine("Admin user created {0}", adminUser.UserName);
         }
         await userManager.AddToRoleAsync(adminUser, "Admin");
     }

@@ -45,37 +45,29 @@ namespace ExpressVoitures.Models
         public int Id { get; set; }
         
         [Required(ErrorMessage = "Saisir code VIN"), Display(Name = "VIN"), StringLength(17, MinimumLength = 17)]
-// ***SET ==> [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
         public string Vin { get; set; } = "";
 
         [Required(ErrorMessage = "Sélectionner statut")]
         public VehiculeStatuts Statut { get; set; } = 0;
 
         [StringLength(200, ErrorMessage = "Information est limité à 200 caractères")]        
- //***SET ==> [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
         public string? Information { get; set; }
 
-        // ***TOCHECK ==> MaxLength(4000) for byte[] type could be mapped to image SQL type
-        [DataType("image"), MaxLength(4000, ErrorMessage = "l'image est limitée à 4000 bytes")]
-        public byte[]? Photo { get; set; }        
+        //UPD13 image support (vehicule)         
+        /*before UPD13: 
+         * [DataType(("image"), MaxLength(4000, ErrorMessage = "l'image est limitée à 4000 bytes")]
+         * public byte[]? Photo { get; set; }
+         * */        
 
-// ***SET ==> Private 
         [Required(ErrorMessage = "Saisir date d'achat"), Display(Name = "Date d'achat")]
         [DataType(DataType.Date)]        
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]        
         public DateTime DateAchat { get; set; }
 
-// ***SET ==> Private 
         [Required(ErrorMessage = "Saisir Prix d'achat")]
         [Display(Name = "Prix d'achat")]
         // FIX03 : update precision from (2, 2) to (7, 2) as Precision(p, s) : p means both left and right of the decimal
-        [DataType(DataType.Currency), Precision(7, 2), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]
-        //      Precision(p, s) : p means both left and right of the decimal
-        //[DataType(DataType.Currency), Precision(5, 2), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]
-        //[Column(TypeName = "decimal(5, 2)")]
-        //[RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid price")]
-        //, RegularExpression(@"^[0-9]+((\,)[0-9]+)*$"
-        //FIX004 : add format to date fields        
+        [Column(TypeName = "decimal(7, 2)"), DataType(DataType.Currency), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]      
         public decimal PrixAchat { get; set; }       
 
         [Required(ErrorMessage = "Saisir année de mise en circulation"), Display(Name = "Année véhicule")]        
@@ -85,16 +77,8 @@ namespace ExpressVoitures.Models
         // MisEnVente (bool) définit l'accessibilité aux informations PrixDeVente et Date de mise Vente
         public bool MisEnVente { get; set; } = false;
 
-// ***SET ==> Private
         [Display(Name = "Prix de vente")]
-        [DataType(DataType.Currency), Precision(7, 2), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]
-        //Precision(p, s) : p means both left and right of the decimal
-        //[DataType(DataType.Currency), Precision(5, 2), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]
-        //[Column(TypeName = "decimal(5, 2)")]
-        //[RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid price")]
-        //, RegularExpression(@"^[0-9]+((\,)[0-9]+)*$"
-        //[RegularExpression(@"\d+(\.\d{1,2})?", ErrorMessage = "Invalid price")]
-        //, RegularExpression(@"^[0-9]+((\,)[0-9]+)*$
+        [Column(TypeName = "decimal(7, 2)"), DataType(DataType.Currency), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]
         public decimal? PrixDeVente { get; set; }
 
         [Display(Name = "Mis en vente"), DataType(DataType.Date)]
@@ -109,20 +93,22 @@ namespace ExpressVoitures.Models
         public DateTime? DateVente { get; set; }
 
         // TD11 : Vehicule class, add DateMisAJour & Marge to class properties
-        //      / Filter index by DateMisAjour
-        //      / Add Marge to Edit view
         // FIX04 : Vehicule class, add DateMisAJour & Marge
         [Display(Name = "Actualisé le"), DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateMisAJour { get; set; } = DateTime.Now;
-        
-        [DataType(DataType.Currency), Precision(7, 2), Range(1, 99999, ErrorMessage = "Saisir une marge au format XXXXX,XX")]
+
+        // UPD14 change attribut Precision(7, 2) for [Column(TypeName = "decimal(7, 2)")]
+        [Column(TypeName = "decimal(7, 2)"), DataType(DataType.Currency), Range(1, 99999, ErrorMessage = "Saisir une marge au format XXXXX,XX")]
         public decimal Marge { get; set; } = 500.00M;
 
-        //[Display(Name = "Finition")]
+        [Display(Name = "Finition")]
         public int FinitionId { get; set; } // Required foreign key property
         public virtual Finition Finition { get; set; } = null!; // Required reference navigation to principal                                                                        
 
         public List<Reparation> Reparations { get; } = [];
+
+        //UPD13 image support (vehicule), navigation property to image
+        public virtual Image? Photo { get; set; }
     }
 }
