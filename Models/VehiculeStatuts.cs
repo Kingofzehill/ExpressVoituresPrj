@@ -15,19 +15,17 @@ namespace ExpressVoitures.Models
     /// VehiculeStatuts enum Class.
     /// Status of a Vehicule (see Statut field).
     /// </summary>
+    // TD15 remove statut Reparation à faire/Reparation en cours and re-numerate them.
+    // TD16 add Action button in create view for Indisponible.
     public enum VehiculeStatuts
     {
         [Display(Name = "Achat")]
-        Achat = 0,
-        [Display(Name = "Reparation à faire")]
-        ReparationAFaire = 1,
-        [Display(Name = "Reparation en cours")]
-        ReparationEnCours = 2,
+        Achat = 0,        
         [Display(Name = "En vente")]
-        EnVente = 3,
+        EnVente = 1,
         [Display(Name = "Vendu")]
-        Vendu = 4,
+        Vendu = 2,
         [Display(Name = "Indisponible")]
-        Indisponible = 5
+        Indisponible = 3
     }
 }

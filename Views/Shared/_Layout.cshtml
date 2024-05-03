@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css" />    
 </head>
-<body>
+@* FIX09 prevent footer to be superposed with main page content : https://radu.link/make-footer-stay-bottom-page-bootstrap/*@
+<body class="d-flex flex-column min-vh-100">
     <header>
         @* UPD10 Change Navbar color if admin connected to bg-warning
 
@@ -81,8 +82,11 @@
             </main>
         </div>
 
-        <footer class="footer text-center">
+        @*Before FIX09 <footer class="border-top footer text-muted text-center"> *@
+        <footer class="mt-auto text-center">
+            <div class="container">
                 &copy; @DateTime.Now.Year - Express Voitures - .NET 8@* - <a asp-area="" asp-controller="Home" asp-action="Privacy">Politique de confidentialité</a>*@
+            </div>
         </footer>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

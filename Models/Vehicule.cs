@@ -39,70 +39,79 @@ using System.ComponentModel.DataAnnotations.Schema; //pour [ForeignKey(<nom cham
 namespace ExpressVoitures.Models
 {
     public class Vehicule
-    {
-        public int _Année; 
-        public const int AnneeAchatMinimum = 1990;
-        
+    {        
+        public const int carYearMinimum = 1990;
+        public const decimal margisMinimum = 500M;
+
         public int Id { get; set; }
-        
-        [Required(ErrorMessage = "Saisir code VIN"), Display(Name = "VIN"), StringLength(17, MinimumLength = 17)]
+
+        //[Required(ErrorMessage = "Saisir code VIN"), Display(Name = "VIN"), StringLength(17, MinimumLength = 17)]
+        //[Required(ErrorMessage = "Saisir {0}")]
+        [Display(Name = "VIN")]
+        /* Bug001 : MinimumLength = 17 cause validation error
+                [StringLength(17, MinimumLength = 17)]
+         */
+        [StringLength(17, ErrorMessage = "{0} doit être de {1} caractères")]
         public string Vin { get; set; } = "";
 
-        [Required(ErrorMessage = "Sélectionner statut")]
-        public VehiculeStatuts Statut { get; set; } = 0;
+        [Required(ErrorMessage = "Sélectionner {0}")]
+        public VehiculeStatuts Statut { get; set; }
 
-        [StringLength(200, ErrorMessage = "Information est limité à 200 caractères")]        
+        [StringLength(200, ErrorMessage = "{0} est limité à {1} caractères")]        
         public string? Information { get; set; }
-
-        //UPD13 image support (vehicule)         
-        /*before UPD13: 
-         * [DataType(("image"), MaxLength(4000, ErrorMessage = "l'image est limitée à 4000 bytes")]
-         * public byte[]? Photo { get; set; }
-         * */        
-
-        [Required(ErrorMessage = "Saisir date d'achat"), Display(Name = "Date d'achat")]
+        
+        [Required(ErrorMessage = "Saisir {0}")]
+        [Display(Name = "Date d'achat")]
         [DataType(DataType.Date)]        
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]        
         public DateTime DateAchat { get; set; }
 
-        [Required(ErrorMessage = "Saisir Prix d'achat")]
+        [Required(ErrorMessage = "Saisir {0}")]
         [Display(Name = "Prix d'achat")]
         // FIX03 : update precision from (2, 2) to (7, 2) as Precision(p, s) : p means both left and right of the decimal
-        [Column(TypeName = "decimal(7, 2)"), DataType(DataType.Currency), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]      
+        [Column(TypeName = "decimal(7, 2)")]
+        [DataType(DataType.Currency)]
+        [Range(1, 99999, ErrorMessage = "Saisir un {0} au format XXXXX.XX")]
+        [RegularExpression(@"^[0-9]+((\.)[0-9]+)*$", ErrorMessage = "Saisir un {0} au format XXXXX.XX")]
         public decimal PrixAchat { get; set; }       
 
-        [Required(ErrorMessage = "Saisir année de mise en circulation"), Display(Name = "Année véhicule")]        
-        [Range(1990, 2024, ErrorMessage = "La valeur pour {0} doit être entre {1} et {2}")]        
-        public int AnneeVehicule { get; set; } = AnneeAchatMinimum;
-
-        // MisEnVente (bool) définit l'accessibilité aux informations PrixDeVente et Date de mise Vente
-        public bool MisEnVente { get; set; } = false;
+        [Required(ErrorMessage = "Saisir {0}")]
+        [Display(Name = "Année")]        
+        [Range(1990, 2024, ErrorMessage = "L'{0} doit être entre {1} et {2}")]        
+        public int AnneeVehicule { get; set; }
 
         [Display(Name = "Prix de vente")]
-        [Column(TypeName = "decimal(7, 2)"), DataType(DataType.Currency), Range(1, 99999, ErrorMessage = "Saisir un prix au format XXXXX,XX")]
+        [Column(TypeName = "decimal(7, 2)")]
+        [DataType(DataType.Currency)]
+        [Range(1, 99999, ErrorMessage = "Saisir un {0} au format XXXXX.XX")]
+        [RegularExpression(@"^[0-9]+((\.)[0-9]+)*$", ErrorMessage = "Saisir un {0} au format XXXXX.XX")]
         public decimal? PrixDeVente { get; set; }
 
-        [Display(Name = "Mis en vente"), DataType(DataType.Date)]
+        [Display(Name = "En vente")]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateMisEnVente { get; set; }
 
-        // Vehicule vendu, Vendu (bool) définit l'accessibilité à l'information Date vente
-        public bool Vendu { get; set; } = false; 
-
-        [Display(Name = "Date vente"), DataType(DataType.Date)]        
+        [Display(Name = "Vendue le")]
+        [DataType(DataType.Date)]        
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]        
         public DateTime? DateVente { get; set; }
 
         // TD11 : Vehicule class, add DateMisAJour & Marge to class properties
         // FIX04 : Vehicule class, add DateMisAJour & Marge
-        [Display(Name = "Actualisé le"), DataType(DataType.Date)]
+        [Display(Name = "Actualisé le")]
+        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DateMisAJour { get; set; } = DateTime.Now;
 
         // UPD14 change attribut Precision(7, 2) for [Column(TypeName = "decimal(7, 2)")]
-        [Column(TypeName = "decimal(7, 2)"), DataType(DataType.Currency), Range(1, 99999, ErrorMessage = "Saisir une marge au format XXXXX,XX")]
-        public decimal Marge { get; set; } = 500.00M;
+        [Column(TypeName = "decimal(7, 2)")]
+        [DataType(DataType.Currency)]
+        [Range(1, 99999, ErrorMessage = "Saisir une {0} au format XXXXX.XX")]
+        [RegularExpression(@"^[0-9]+((\.)[0-9]+)*$", ErrorMessage = "Saisir une {0} au format XXXXX.XX")]
+        public decimal Marge { get; set; }
 
+        [Required(ErrorMessage = "Sélectionner {0}")]
         [Display(Name = "Finition")]
         public int FinitionId { get; set; } // Required foreign key property
         public virtual Finition Finition { get; set; } = null!; // Required reference navigation to principal                                                                        
@@ -111,5 +120,11 @@ namespace ExpressVoitures.Models
 
         //UPD13 image support (vehicule), navigation property to image
         public virtual Image? Image { get; set; } //navigation property for 1/1 relationship with Image(CHILD)
+
+        // TD17 remove bool MisEnVente/Vendu (migration / update db)
+        // MisEnVente (bool) définit l'accessibilité aux informations PrixDeVente et Date de mise Vente
+        public bool MisEnVente { get; set; } = false;
+        // Vehicule vendu, Vendu (bool) définit l'accessibilité à l'information Date vente
+        public bool Vendu { get; set; } = false;
     }
 }

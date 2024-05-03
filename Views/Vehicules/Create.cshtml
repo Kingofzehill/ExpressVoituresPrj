@@ -3,48 +3,34 @@
 @{
     ViewData["Title"] = "Créer";
 }
-@* UPD002 Vehicule Create view updates
-    - MisEnVente / Vendu boolean fields not displayed
-    - statut = achat + readonly
-*@
 <h1>Créer Voiture</h1>
 
 @* <h4>Voiture</h4> *@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @* <div class="form-group">
-                <label asp-for="Photo" class="control-label"></label>
-                <input asp-for="Photo" class="form-control" />
-                <span asp-validation-for="Photo" class="text-danger"></span>
-            </div> *@
+        @* FIX07 Image support add enctype="multipart/form-data" to form tag for file upload *@
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
             <div class="form-group">
-                <label asp-for="Statut" class="control-label"></label>
+                <label asp-for="Statut" class="control-label"></label> *
                 @*FIX001.1 displays enum values list OLD ==> <select asp-for="Statut" class="form-control"></select>*@
                 <select asp-for="Statut" class="form-control" asp-items="Html.GetEnumSelectList<VehiculeStatuts>()">                 
                 </select>
                 <span asp-validation-for="Statut" class="text-danger"></span>
-            </div>
-            @* TD13 : Vehicule Edit, PrixDeVente (readonly) = PrixDAchat + Marge *@
+            </div>                        
             <div class="form-group">
-                <label asp-for="PrixDeVente" class="control-label"></label>
-                <input asp-for="PrixDeVente" class="form-control" />
-                <span asp-validation-for="PrixDeVente" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vin" class="control-label"></label>
+                <label asp-for="Vin" class="control-label"></label> *
                 <input asp-for="Vin" class="form-control" />
                 <span asp-validation-for="Vin" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AnneeVehicule" class="control-label"></label>
-                <input asp-for="AnneeVehicule" class="form-control" value="@ViewData["AnneeVehiculeMin"]" />
+                <label asp-for="AnneeVehicule" class="control-label"></label> *
+                <input asp-for="AnneeVehicule" class="form-control" value="@ViewData["CarYearMinimum"]" />
                 <span asp-validation-for="AnneeVehicule" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FinitionId" class="control-label"></label>
+                <label asp-for="FinitionId" class="control-label"></label> *
                 <select asp-for="FinitionId" class="form-control" asp-items="ViewBag.FinitionId">
                     <option value="0">Sélectionner...</option>
                 </select>
@@ -53,6 +39,11 @@
                 <label asp-for="Information" class="control-label"></label>
                 <input asp-for="Information" class="form-control" />
                 <span asp-validation-for="Information" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateAchat" class="control-label"></label> *
+                <input asp-for="DateAchat" class="form-control" />
+                <span asp-validation-for="DateAchat" class="text-danger"></span>                
             </div>
             <div class="form-group">
                 <label asp-for="DateMisEnVente" class="control-label"></label>
@@ -65,41 +56,40 @@
                 <span asp-validation-for="DateVente" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateAchat" class="control-label"></label>
-                @*https://github.com/Eonasdan/tempus-dominus/issues/212*@
-                <input asp-for="DateAchat" class="form-control" disableEntry="true" />
-                <span asp-validation-for="DateAchat" class="text-danger"></span>
-                @*@Html.EditorFor(model => model.DateAchat, new { htmlAttributes = new { @class = "form-control", type = "Date", min = "1944-01-01", max = "2019-01-01" } })
-                @Html.ValidationMessageFor(model => model.DateAchat, "", new { @class = "text-danger" })*@
-            </div>
-            <div class="form-group">
-                <label asp-for="PrixAchat" class="control-label"></label>
+                <label asp-for="PrixAchat" class="control-label"></label> *
                 <input asp-for="PrixAchat" class="form-control" />
                 <span asp-validation-for="PrixAchat" class="text-danger"></span>
             </div>
+            @* TD12 : Vehicule Edit, add reparations*@
             <div class="form-group">
                 <label asp-for="Marge" class="control-label"></label>
-                <input asp-for="Marge" class="form-control" />
+                @if (ViewData["MargisMinimum"] != null)
+                {
+                    var margisMinimum = ViewData["MargisMinimum"];
+                }
+                <input asp-for="Marge" class="form-control" value="@ViewBag.margisMinimum" />
                 <span asp-validation-for="Marge" class="text-danger"></span>
             </div>
-            @* TD12 : Vehicule Edit, add reparations*@            
-
-
-            @*
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="MisEnVente" /> @Html.DisplayNameFor(model => model.MisEnVente)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Vendu" /> @Html.DisplayNameFor(model => model.Vendu)
-                </label>
-            </div>
-            *@
+            @* TD13 : Vehicule Edit, PrixDeVente (readonly) = PrixDAchat + Marge *@
             <div class="form-group">
-                <input type="submit" value="Sauvegarder Voiture" class="btn btn-success btn-sm" />
-                <a asp-action="Index" class="btn btn-light btn-sm">Retour à la liste des Voitures</a>
+                <label asp-for="PrixDeVente" class="control-label"></label>
+                <input asp-for="PrixDeVente" class="form-control" />
+                <span asp-validation-for="PrixDeVente" class="text-danger"></span>
+            </div>                                  
+            @* UPD13.5 create view image support*@
+            <div class="form-group">
+                <label asp-for="Image.File" class="control-label"></label>
+                @if (ViewData["Image"] != null)
+                {
+                    Image myImage = (Image)ViewData["Image"];
+                    <span>(<a target="_blank" href="@Url.Content($"~/{myImage.Path}")">@myImage.Name</a>)</span>
+                }
+                <input type="file" asp-for="Image.File" class="form-control" />
+                <span asp-validation-for="Image.File" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <input type="submit" value="Sauvegarder Voiture" class="btn btn-success btn-sm" />                
+                <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Voitures</a>
             </div>
         </form>
     </div>

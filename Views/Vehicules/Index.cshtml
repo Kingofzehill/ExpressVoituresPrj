@@ -1,10 +1,17 @@
-﻿@model IEnumerable<ExpressVoitures.Models.Vehicule>
+﻿@* @System.Globalization.CultureInfo.CurrentUICulture *@
+@model IEnumerable<ExpressVoitures.Models.Vehicule>
 @*@using System.Security.Claims*@
 @{
     ViewData["Title"] = "Accueil";
 }
 
 @*<h1>Liste des Voitures</h1>*@
+
+<style>
+    td{
+      vertical-align:middle;      
+    }
+</style>
 
 <p>
     @*UPD09.1 : check user connected with admin role for actions or informations in Views reserved for admin*@
@@ -16,21 +23,11 @@
 <table class="table">
     <thead>
         <tr>
-            @* <th>
-                @Html.DisplayNameFor(model => model.Photo)
-            </th> *@
-            @* TD09 Vehicule index : Statut & Vin for admin only*@
-            @if (User.IsInRole("Admin"))
-            {
-                <th>
-                    @Html.DisplayNameFor(model => model.Statut)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Vin)
-                </th>
-            }
             <th>
                 @Html.DisplayNameFor(model => model.AnneeVehicule)
+            </th>
+            <th>                
+                Image
             </th>
             @* TD08 Vehicule index : add Marque et Modele*@
             <th>
@@ -44,7 +41,17 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DateMisEnVente)
-            </th>         
+            </th>
+            @* TD09 Vehicule index : Statut & Vin for admin only*@
+            @if (User.IsInRole("Admin"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Statut)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Vin)
+                </th>
+            }
             @*
             <th>
                 @Html.DisplayNameFor(model => model.DateAchat)
@@ -67,21 +74,16 @@
     </thead>
     <tbody>
         @foreach (var item in Model) {
-        <tr>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.Photo)
-            </td> *@
-            @if (User.IsInRole("Admin"))
-            {
-                <td>
-                    @Html.DisplayFor(modelItem => item.Statut)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Vin)
-                </td>
-            }
+        <tr>            
             <td>
                 @Html.DisplayFor(modelItem => item.AnneeVehicule)
+            </td>
+            <td>
+                @* UPD13.6 image support in index Vehicule*@
+                @if (item.Image != null)
+                {
+                    <img src="@Url.Content(item.Image.Path)" width="96" height="96">
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Finition.LibelleFinition)
@@ -95,6 +97,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.DateMisEnVente)
             </td>
+            @if (User.IsInRole("Admin"))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Statut)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vin)
+                </td>
+            }
             @*
             <td>
                 @Html.DisplayFor(modelItem => item.DateAchat)

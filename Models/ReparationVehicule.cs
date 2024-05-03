@@ -22,7 +22,10 @@ namespace ExpressVoitures.Models
         [Display(Name = "Coût réparation")]
         // UPD14 change attribut Precision(7, 2) for [Column(TypeName = "decimal(7, 2)")]
         // UPD07 update property ReparationVehicule.CoutReparation ==> from Precision(4, 2) to Precision(7, 2)
-        [Column(TypeName = "decimal(7, 2)"), DataType(DataType.Currency), Range(1, 99999), RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un prix au format XXXX,XX")]
+        [Column(TypeName = "decimal(7, 2)")]
+        [DataType(DataType.Currency)]
+        [Range(1, 99999, ErrorMessage = "Saisir un {0} au format XXXXX.XX")]
+        [RegularExpression(@"^[0-9]+((\.)[0-9]+)*$", ErrorMessage = "Saisir un {0} au format XXXXX.XX")]
         public decimal CoutReparation { get; set; }
     }
 }

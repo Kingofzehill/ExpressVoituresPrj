@@ -1,8 +1,10 @@
 ﻿using ExpressVoitures.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ExpressVoitures.Services
 {
     //UPD13 image support : dependency
+    [Authorize(Roles = "Admin")]
     public class ImageService
     {
         private readonly PathService pathService;

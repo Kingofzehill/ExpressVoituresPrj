@@ -15,7 +15,7 @@ namespace ExpressVoitures.Models
         // [NotMapped]: property not to create in DB.
         [NotMapped]
         [Display(Name = "Image")]
-        public IFormFile File { get; set; }
+        public IFormFile? File { get; set; }
 
         public int VehiculeId { get; set; }
         public Vehicule? Vehicule { get; set; } //navigation property for 1/1 relationship with Vehicule (PARENT)

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ExpressVoitures.Models;
 using ExpressVoitures.Services;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ExpressVoituresContext>(options =>
@@ -20,9 +22,10 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
-// UPD13.3 dependency injections for PathService / ImageService
+// UPD13.3 dependency injections for PathService / ImageService / VehiculeService
 builder.Services.AddSingleton<PathService>();
 builder.Services.AddSingleton<ImageService>();
+builder.Services.AddSingleton<VehiculeService>();
 
 var app = builder.Build();
 
@@ -88,5 +91,16 @@ app.MapControllerRoute(
     //pattern: "{controller=Home}/{action=Index}/{id?}");
     pattern: "{controller=Vehicules}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+// FIX08 add locolization fr-FR (for managing comma separator in Prices)
+//      https://github.com/dotnet/AspNetCore.Docs/issues/4076
+var defaultCulture = new CultureInfo("fr-FR");
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(defaultCulture),
+    SupportedCultures = new List<CultureInfo> { defaultCulture },
+    SupportedUICultures = new List<CultureInfo> { defaultCulture }
+};
+app.UseRequestLocalization("fr-FR");
 
 app.Run();
