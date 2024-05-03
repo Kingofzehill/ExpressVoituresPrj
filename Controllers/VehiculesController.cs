@@ -58,23 +58,12 @@ namespace ExpressVoitures.Controllers
         {            
             ViewData["FinitionId"] = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition");
             ViewData["Statut"] = defaultStatus; // 0 = VehiculeStatuts.Achat
-            ViewData["CarYearMinimum"] = carYearMinimum;
-            ViewData["MargisMinimum"] = margisMinimum;
+            ViewData["AnneeMinimumVehicule"] = carYearMinimum;
+            ViewData["MargeMinimum"] = margisMinimum;
+            ViewData["ActionEnVente"] = false;
+            ViewData["ActionVendu"] = false;
             return View();
-        }
-        /* Before UPD13
-        public IActionResult Create(int StatutDefault = 0, int AnneeVehiculeDefault = Vehicule.AnneeAchatMinimum)
-        {
-            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition");
-            ViewData["Statut"] = StatutDefault; // 0 = VehiculeStatuts.Achat
-            ViewData["AnneeVehiculeMin"] = AnneeVehiculeDefault;            
-            return View();
-        }*/
-        /*public IActionResult Create()
-        {
-            ViewData["FinitionId"] = new SelectList(_context.Set<Finition>(), "Id", "LibelleFinition");            
-            return View();
-        }*/
+        }        
 
         // POST: Vehicules/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -82,7 +71,7 @@ namespace ExpressVoitures.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Vin,Statut,Information,DateAchat,PrixAchat,AnneeVehicule,PrixDeVente,DateMisEnVente,DateVente,FinitionId,Marge,Image")] Vehicule vehicule)
+        public async Task<IActionResult> Create([Bind("Id,Vin,Statut,Information,DateAchat,PrixAchat,AnneeVehicule,PrixDeVente,DateMisEnVente,DateVente,FinitionId,Marge,Image,MisEnVente,Vendu,ActionEnVente,AnneeMinimumVehicule,MargeMinimum,ActionVendu")] Vehicule vehicule)
         {
             // ignore navigation property
             ModelState.Remove(nameof(Vehicule.Finition));            
@@ -99,25 +88,28 @@ namespace ExpressVoitures.Controllers
                 _context.Add(vehicule);
                 await _context.SaveChangesAsync();
 
-                bool bDisplayVehiculeActionsForSale = false;
+                bool bDisplayVehiculeActionForSale = false;
+                bool bDisplayVehiculeActionSold = false;
 
-                //To add in index Vehicule View for new admin action button "Mise en vente"
+                ViewData["ActionEnVente"] = false;
+                ViewData["ActionVendu"] = false;
                 // Displays "Mettre en vente" action
                 if ((vehicule.MisEnVente == false) && (_vehiculeService.CarToSaleButtonDisplay(vehicule) == true))
-                {                    
-                    bDisplayVehiculeActionsForSale = true;                    
-                }
-
-                //To add in index Vehicule View for new admin action buttons "Vendu" / "Indisponible"
-                // Displays "Vendu" action
-                if ((vehicule.MisEnVente = true) && (vehicule.Vendu = false) && (_vehiculeService.CarSoldButtonDisplay(vehicule) == true))
-                {                    
-                    bDisplayVehiculeActionsForSale = true;                    
-                }
-
-                if (bDisplayVehiculeActionsForSale == true)
                 {
-                    ViewData["FinitionId"] = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition", vehicule.FinitionId);
+                    bDisplayVehiculeActionForSale = true;
+                    ViewData["ActionEnVente"] = true;                    
+                }
+                
+                // Displays "Vendu" action
+                if ((vehicule.Vendu == false) && (_vehiculeService.CarSoldButtonDisplay(vehicule) == true))
+                {
+                    bDisplayVehiculeActionSold = true;                    
+                    ViewData["ActionVendu"] = true;
+                }
+
+                if ((bDisplayVehiculeActionForSale == true) || (bDisplayVehiculeActionSold == true))
+                {
+                    ViewData["FinitionId"] = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition", vehicule.FinitionId);                    
                     return View(vehicule);
                 }
                 else
@@ -127,6 +119,49 @@ namespace ExpressVoitures.Controllers
             }
             ViewData["FinitionId"] = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition", vehicule.FinitionId);
             return View(vehicule);
+        }
+
+        /// <summary>
+        /// SetCarToSell Vehicule Controller Method  ==> set a Car in Sale.         
+        /// </summary>
+        /// <remarks>Car displayed into Public Vehicule index page.</remarks> 
+        [Authorize(Roles = "Admin")]        
+        public async Task<IActionResult> SetCarToSell(int id)
+        {
+            var myVehicule = await _context.Vehicule.FindAsync(id);
+            if (myVehicule == null)
+            {
+                return NotFound();
+            }            
+
+            myVehicule.DateMisAJour = DateTime.Now;
+            myVehicule.Statut = VehiculeStatuts.EnVente;
+            myVehicule.MisEnVente = true;            
+            _context.Update(myVehicule);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));            
+        }
+
+        /// <summary>
+        /// SetCarSold Vehicule Controller Method  ==> set a Car as sold.           
+        /// </summary>
+        /// <remarks>Car is not displayed into Public Vehicule index page anymore.</remarks> 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> SetCarSold(int id)
+        {
+            var myVehicule = await _context.Vehicule.FindAsync(id);
+            if (myVehicule == null)
+            {
+                return NotFound();
+            }
+
+            myVehicule.DateMisAJour = DateTime.Now;
+            myVehicule.Statut = VehiculeStatuts.Vendu;
+            //myVehicule.MisEnVente = false;
+            myVehicule.Vendu = true;
+            _context.Update(myVehicule);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Vehicules/Edit/5
@@ -153,7 +188,7 @@ namespace ExpressVoitures.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Vin,Statut,Information,DateAchat,PrixAchat,AnneeVehicule,PrixDeVente,DateMisEnVente,DateVente,FinitionId,Marge,Image")] Vehicule vehicule)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Vin,Statut,Information,DateAchat,PrixAchat,AnneeVehicule,PrixDeVente,DateMisEnVente,DateVente,FinitionId,Marge,Image,MisEnVente,Vendu,ActionEnVente,AnneeMinimumVehicule,MargeMinimum,ActionVendu")] Vehicule vehicule)
         {
             if (id != vehicule.Id)
             {
@@ -168,7 +203,6 @@ namespace ExpressVoitures.Controllers
                 try
                 {
                     vehicule.DateMisAJour = DateTime.Now;
-
                     _context.Update(vehicule);
                     await _context.SaveChangesAsync();
                 }

@@ -20,11 +20,8 @@
             </div> *@
             <div class="form-group">
                 <label asp-for="Statut" class="control-label"></label>
-                @*FIX001.1 displays enum values list
-                OLD ==> <select asp-for="Statut" class="form-control"></select>
-                *@
-                <select asp-for="Statut" asp-items="Html.GetEnumSelectList<VehiculeStatuts>()">
-                    @*<option selected="selected" value="">Sélectionner</option>*@
+                @*FIX001.1 displays enum values list*@
+                <select asp-for="Statut" asp-items="Html.GetEnumSelectList<VehiculeStatuts>()">                    
                 </select>
                 <span asp-validation-for="Statut" class="text-danger"></span>
             </div>

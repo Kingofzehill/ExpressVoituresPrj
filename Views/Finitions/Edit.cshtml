@@ -12,15 +12,10 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="LibelleFinition" class="control-label"></label>
-                <input asp-for="LibelleFinition" class="form-control" />
-                <span asp-validation-for="LibelleFinition" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Id" />            
             @*UPD11 (view) cascading dropdownlist Marque / Modele*@
             <div class="form-group">
-                <label for="Marque">Filtrer les Modèles par Marque :</label><br>
+                <label for="Marque">Marque :</label><br>
                 @* @Html.DropDownList("Marque", (SelectList)ViewData["Marque"], "Sélectionner...", new { @class = "form-control" }) *@
                 @{
                     //var MarqueDefault = ViewData["MarqueDefault"] as string;
@@ -31,11 +26,16 @@
                 @Html.DropDownList("Marque", marqueSelectListItems, new { @class = "form-control" })
             </div>
             <div class="form-group">
-                <label asp-for="ModeleId" class="control-label">Finition du Modèle</label>
+                <label asp-for="ModeleId" class="control-label">Modèle :</label>
                 <select asp-for="ModeleId" class="form-control" asp-items="ViewBag.ModeleId">
                     <option value="0">Sélectionner...</option>
                 </select>
                 <span asp-validation-for="ModeleId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LibelleFinition" class="control-label"></label>
+                <input asp-for="LibelleFinition" class="form-control" />
+                <span asp-validation-for="LibelleFinition" class="text-danger"></span>
             </div>
             <div class="form-group">                
                 <input type="submit" value="Sauvegarder Finition" class="btn btn-success btn-sm" />

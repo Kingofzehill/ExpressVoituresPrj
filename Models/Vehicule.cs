@@ -120,11 +120,9 @@ namespace ExpressVoitures.Models
 
         //UPD13 image support (vehicule), navigation property to image
         public virtual Image? Image { get; set; } //navigation property for 1/1 relationship with Image(CHILD)
-
-        // TD17 remove bool MisEnVente/Vendu (migration / update db)
-        // MisEnVente (bool) définit l'accessibilité aux informations PrixDeVente et Date de mise Vente
+        
         public bool MisEnVente { get; set; } = false;
-        // Vehicule vendu, Vendu (bool) définit l'accessibilité à l'information Date vente
+        
         public bool Vendu { get; set; } = false;
     }
 }

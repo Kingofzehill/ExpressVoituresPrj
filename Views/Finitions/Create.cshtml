@@ -13,17 +13,10 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger">
             </div>
-            <div class="form-group">
-                <label asp-for="LibelleFinition" class="control-label"></label>
-                <input asp-for="LibelleFinition" class="form-control" />
-                <span asp-validation-for="LibelleFinition" class="text-danger"></span>
-            </div>
             @*UPD11 (view) cascading dropdownlist Marque / Modele*@
             <div class="form-group">                
-                <label for="Marque">Filtrer les Modèles par Marque :</label><br>                                                
-                @* @Html.DropDownList("Marque", (SelectList)ViewData["Marque"], "Sélectionner...", new { @class = "form-control" }) *@
-                @{
-                    //var MarqueDefault = ViewData["MarqueDefault"] as string;
+                <label for="Marque">Marque :</label><br>                                                                
+                @{                    
                     var marqueSelectList = (SelectList)ViewData["Marque"];
                     List<SelectListItem> marqueSelectListItems = marqueSelectList.ToList();
                     marqueSelectListItems.Insert(0, (new SelectListItem { Text = "Sélectionner...", Value = "0", Selected = false }));
@@ -31,12 +24,17 @@
                 @Html.DropDownList("Marque", marqueSelectListItems, new { @class = "form-control" })
             </div>
             <div class="form-group">
-                <label asp-for="ModeleId" class="control-label">Finition du Modèle</label>
+                <label asp-for="ModeleId" class="control-label">Modèle :</label>
                 <select asp-for="ModeleId" class ="form-control" asp-items="ViewBag.ModeleId">
                     <option value="0">Sélectionner...</option>
                 </select>
                 @*UPD11 (view) cascading dropdownlist Marque / Modele*@
                 <span asp-validation-for="ModeleId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LibelleFinition" class="control-label"></label>
+                <input asp-for="LibelleFinition" class="form-control" />
+                <span asp-validation-for="LibelleFinition" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Sauvegarder Finition" class="btn btn-success btn-sm" />

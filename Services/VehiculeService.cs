@@ -12,17 +12,16 @@ namespace ExpressVoitures.Services
         }
 
         /// <summary>
-        /// CarToSaleButtonDisplay Method
-        /// Evaluate if mandatories Vehicule properties DateMisEnVente & DateVente are filled for displaying "Mettre en vente" button. 
-        /// This button set a Vehicule to be sale and displays it the Public Vehicule index page.
-        /// </summary>
-        /// <remarks>Vehicules properties defined in the Data Model Class are not evaluated</remarks>
+        /// CarToSaleButtonDisplay Method ==> Displays "Mettre en vente" button. 
+        /// Evaluate if mandatories Vehicule properties DateMisEnVente & DateVente are correctly filled 
+        /// and evaluates vehicule workflow.        
+        /// </summary>      
         /// <remarks></remarks>
         public bool CarToSaleButtonDisplay(Vehicule vehicule)
         {
             bool bToSaleButtonDisplay = false;                                  
 
-            if ((vehicule.DateMisEnVente != null) && (vehicule.PrixDeVente > 0))
+            if ((vehicule.DateMisEnVente != null) && (vehicule.PrixDeVente > 0) && (vehicule.MisEnVente == false))
             {
                 bToSaleButtonDisplay = true;
             }
@@ -31,16 +30,16 @@ namespace ExpressVoitures.Services
         }
 
         /// <summary>
-        /// CarSoldButtonDisplay Method
-        /// Evaluate if mandatory Vehicule property DateVente is filled for displaying "Vendu" button. 
-        /// This button set a Vehicule as sold and removes it from the Public Vehicule index page.
+        /// CarSoldButtonDisplay Method  ==> Displays "Vendu" button. 
+        /// Evaluate if mandatory Vehicule property DateVente is filled
+        /// and evaluates vehicule workflow.        
         /// </summary>
         /// <remarks></remarks>        
         public bool CarSoldButtonDisplay(Vehicule vehicule)
         {
             bool bSoldButtonDisplay = false;                           
 
-            if (vehicule.DateVente != null) 
+            if ((vehicule.DateVente != null) && (vehicule.Vendu == false))
             {
                 bSoldButtonDisplay = true;
             }

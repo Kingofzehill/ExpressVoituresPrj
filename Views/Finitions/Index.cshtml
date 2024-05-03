@@ -11,12 +11,12 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
+        <tr>            
             <th>
-                @Html.DisplayNameFor(model => model.LibelleFinition)
+                @Html.DisplayNameFor(model => model.Modele)
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.Modele)*@Finition attachée au Modèle
+                @Html.DisplayNameFor(model => model.LibelleFinition)
             </th>
             <th></th>
         </tr>
@@ -25,11 +25,11 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.LibelleFinition)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Modele.LibelleModele)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LibelleFinition)
+            </td>            
             <td>                            
                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">Détails</a>
                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
