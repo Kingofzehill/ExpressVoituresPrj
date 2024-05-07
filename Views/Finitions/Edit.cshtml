@@ -15,10 +15,8 @@
             <input type="hidden" asp-for="Id" />            
             @*UPD11 (view) cascading dropdownlist Marque / Modele*@
             <div class="form-group">
-                <label for="Marque">Marque :</label><br>
-                @* @Html.DropDownList("Marque", (SelectList)ViewData["Marque"], "Sélectionner...", new { @class = "form-control" }) *@
-                @{
-                    //var MarqueDefault = ViewData["MarqueDefault"] as string;
+                <label for="Marque">Marque :</label><br>                
+                @{                    
                     var marqueSelectList = (SelectList)ViewData["Marque"];
                     List<SelectListItem> marqueSelectListItems = marqueSelectList.ToList();
                     marqueSelectListItems.Insert(0, (new SelectListItem { Text = "Sélectionner...", Value = "0", Selected = false }));
@@ -36,6 +34,9 @@
                 <label asp-for="LibelleFinition" class="control-label"></label>
                 <input asp-for="LibelleFinition" class="form-control" />
                 <span asp-validation-for="LibelleFinition" class="text-danger"></span>
+            </div>
+            <div>
+                &nbsp;
             </div>
             <div class="form-group">                
                 <input type="submit" value="Sauvegarder Finition" class="btn btn-success btn-sm" />
@@ -72,11 +73,11 @@
             $(dropDownId).append("<option>Sélectionner...</option>");
             //debugger;
             $.each(list, function (index, row) {
-                if (index == 0) {
-                    $(dropDownId).append("<option value='" + row.value + "' selected='selected'>" + row.text + "</option>");
-                } else {
-                    $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>");
-                }
+                $(dropDownId).append($('<option/>')
+                    .val(row.value)
+                    .text(row.text)
+                    .attr("selected", row.selected)
+                )
             });
         }
     </script>

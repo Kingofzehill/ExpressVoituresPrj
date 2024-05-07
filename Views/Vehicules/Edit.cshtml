@@ -8,16 +8,11 @@
 
 @* <h4>Voiture</h4> *@
 <hr />
-<div class="row">
+<div id="dropDownListdiv" class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            @* <div class="form-group">
-                <label asp-for="Photo" class="control-label"></label>
-                <input asp-for="Photo" class="form-control" />
-                <span asp-validation-for="Photo" class="text-danger"></span>
-            </div> *@
             <div class="form-group">
                 <label asp-for="Statut" class="control-label"></label>
                 @*FIX001.1 displays enum values list*@
@@ -25,30 +20,57 @@
                 </select>
                 <span asp-validation-for="Statut" class="text-danger"></span>
             </div>
-            @* TD13 : Vehicule Edit, PrixDeVente (readonly) = PrixDAchat + Marge *@
-            <div class="form-group">
-                <label asp-for="PrixDeVente" class="control-label"></label>
-                <input asp-for="PrixDeVente" class="form-control" />
-                <span asp-validation-for="PrixDeVente" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Vin" class="control-label"></label>
                 <input asp-for="Vin" class="form-control" />
                 <span asp-validation-for="Vin" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AnneeVehicule" class="control-label"></label>
-                <input asp-for="AnneeVehicule" class="form-control" value="@ViewData["AnneeVehiculeMin"]" />
-                <span asp-validation-for="AnneeVehicule" class="text-danger"></span>
+                <label asp-for="AnneeVehicule" class="control-label"></label> *
+                @{
+                    var myYear = ViewData["AnneeVehicule"];
+                    if (myYear == null)
+                    {
+                        myYear = ViewData["AnneeMinimumVehicule"];
+                    }
+                    <input asp-for="AnneeVehicule" class="form-control" value="@myYear" />
+                    <span asp-validation-for="AnneeVehicule" class="text-danger"></span>
+                }
+            </div>
+            @* Marque and Modele dropdownlist with cascade updates*@
+            <div class="form-group">
+                <label for="Marque">Marque :</label><br>
+                @{
+                    var marqueSelectList = (SelectList)ViewData["Marque"];
+                    List<SelectListItem> marqueSelectListItems = marqueSelectList.ToList();
+                    marqueSelectListItems.Insert(0, (new SelectListItem { Text = "Sélectionner...", Value = "0", Selected = false }));
+                }
+                @Html.DropDownList("Marque", marqueSelectListItems, new { @class = "form-control" })
             </div>
             <div class="form-group">
-                <label asp-for="FinitionId" class="control-label"></label>
-                <select asp-for="FinitionId" class="form-control" asp-items="ViewBag.FinitionId"></select>
+                <label for="Modele">Modele :</label><br>
+                @{
+                    var modeleSelectList = (SelectList)ViewData["Modele"];
+                    List<SelectListItem> modeleSelectListItems = modeleSelectList.ToList();
+                    modeleSelectListItems.Insert(0, (new SelectListItem { Text = "Sélectionner...", Value = "0", Selected = false }));
+                }
+                @Html.DropDownList("Modele", modeleSelectListItems, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label asp-for="FinitionId" class="control-label"></label> *
+                <select asp-for="FinitionId" class="form-control" asp-items="ViewBag.FinitionId">
+                    <option value="0">Sélectionner...</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Information" class="control-label"></label>
                 <input asp-for="Information" class="form-control" />
                 <span asp-validation-for="Information" class="text-danger"></span>
+            </div>            
+            <div class="form-group">
+                <label asp-for="DateAchat" class="control-label"></label> *
+                <input asp-for="DateAchat" class="form-control" />
+                <span asp-validation-for="DateAchat" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateMisEnVente" class="control-label"></label>
@@ -61,40 +83,67 @@
                 <span asp-validation-for="DateVente" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateAchat" class="control-label"></label>
-                @*https://github.com/Eonasdan/tempus-dominus/issues/212*@
-                <input asp-for="DateAchat" class="form-control" disableEntry="true" />
-                <span asp-validation-for="DateAchat" class="text-danger"></span>
-                @*@Html.EditorFor(model => model.DateAchat, new { htmlAttributes = new { @class = "form-control", type = "Date", min = "1944-01-01", max = "2019-01-01" } })
-                @Html.ValidationMessageFor(model => model.DateAchat, "", new { @class = "text-danger" })*@
-            </div>
-            <div class="form-group">
                 <label asp-for="PrixAchat" class="control-label"></label>
                 <input asp-for="PrixAchat" class="form-control" />
                 <span asp-validation-for="PrixAchat" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Marge" class="control-label"></label>
-                <input asp-for="Marge" class="form-control" />
-                <span asp-validation-for="Marge" class="text-danger"></span>
+                @{
+                    var myMargis = ViewData["Marge"];
+                    if (myMargis == null)
+                    {
+                        myMargis = ViewData["MargeMinimum"];
+                    }
+                    @* <input asp-for="Marge" class="form-control" value="@ViewBag.marge" /> *@
+                    <input asp-for="Marge" class="form-control" value="@myMargis" />
+                    <span asp-validation-for="Marge" class="text-danger"></span>
+                }
             </div>
-            @* TD12 : Vehicule Edit, add reparations*@
-
-
-            @*
-            <div class="form-group form-check">
-            <label class="form-check-label">
-            <input class="form-check-input" asp-for="MisEnVente" /> @Html.DisplayNameFor(model => model.MisEnVente)
-            </label>
-            </div>
-            <div class="form-group form-check">
-            <label class="form-check-label">
-            <input class="form-check-input" asp-for="Vendu" /> @Html.DisplayNameFor(model => model.Vendu)
-            </label>
-            </div>
-            *@
             <div class="form-group">
-                <input type="submit" value="Sauvegarder Voiture" class="btn btn-success btn-sm" />
+                <label asp-for="PrixDeVente" class="control-label"></label>
+                <input asp-for="PrixDeVente" class="form-control" />
+                <span asp-validation-for="PrixDeVente" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image.File" class="control-label"></label>
+                @if (ViewData["Image"] != null)
+                {
+                    Image myImage = (Image)ViewData["Image"];
+                    <span>(<a target="_blank" href="@Url.Content($"~/{myImage.Path}")">@myImage.Name</a>)</span>
+                }
+                <input type="file" asp-for="Image.File" class="form-control" />
+                <span asp-validation-for="Image.File" class="text-danger"></span>
+            </div>      
+            <div>&nbsp;
+            </div>
+            <div class="form-group">
+                @{
+                    var myActionToSale = (bool)ViewData["ActionEnVente"];
+                    var myActionSold = (bool)ViewData["ActionVendu"];
+
+                    if ((myActionToSale == false) || (myActionSold == false))
+                    {
+                        <input type="submit" value="Sauvegarder Voiture" class="btn btn-success btn-sm" />
+                    }
+
+                    if (myActionToSale == true)
+                    {
+                        if (Model.Id != null)
+                        {
+                            var myCarId = Model.Id;
+                            <a asp-action="SetCarToSell" class="btn btn-warning btn-sm" asp-route-id="@myCarId">Mettre en vente</a>
+                        }
+                    }
+                    if (myActionSold == true)
+                    {
+                        if (Model.Id != null)
+                        {
+                            var myCarId = Model.Id;
+                            <a asp-action="SetCarSold" class="btn btn-warning btn-sm" asp-route-id="@myCarId">Vendu</a>
+                        }
+                    }
+                }
                 <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Voitures</a>
             </div>
         </form>
@@ -103,4 +152,47 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        @*statut dropdownlist readonly*@
+        $("#Statut").attr("disabled", "disabled");
+
+        $(function () {
+            $("#dropDownListdiv").on("change", "select", function () {
+                var value = $(this).val();
+                var id = $(this).attr("id");
+                //debugger;
+                $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
+                    switch (id) {
+                        case "Marque":
+                            //debugger;
+                            PopulateDropDown("#Modele", data);
+                            PopulateDropDown("#FinitionId", data);
+                            break;
+                        case "Modele":
+                            //debugger;
+                            PopulateDropDown("#Marque", data);
+                            PopulateDropDown("#FinitionId", data);
+                            break;
+                        case "ModeleId":
+                            //debugger;
+                            PopulateDropDown("#Marque", data);
+                            PopulateDropDown("#FinitionId", data);
+                            break;
+                    }
+                });
+            });
+        });
+        function PopulateDropDown(dropDownId, list) {
+            $(dropDownId).empty();
+            $(dropDownId).append("<option>Sélectionner...</option>");
+            //debugger;
+            $.each(list, function (index, row) {
+                $(dropDownId).append($('<option/>')
+                    .val(row.value)
+                    .text(row.text)
+                    .attr("selected", row.selected)
+                )
+            });
+        }
+    </script>
 }

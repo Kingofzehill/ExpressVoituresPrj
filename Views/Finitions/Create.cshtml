@@ -36,6 +36,9 @@
                 <input asp-for="LibelleFinition" class="form-control" />
                 <span asp-validation-for="LibelleFinition" class="text-danger"></span>
             </div>
+            <div>
+                &nbsp;
+            </div>
             <div class="form-group">
                 <input type="submit" value="Sauvegarder Finition" class="btn btn-success btn-sm" />
                 <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Finitions</a>
@@ -52,7 +55,7 @@
             $("#dropDownListdiv").on("change", "select", function () {
                 var value = $(this).val();
                 var id = $(this).attr("id");
-                //debugger;
+                debugger;
                 $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
                     switch (id) {
                         case "Marque":
@@ -69,15 +72,23 @@
         });
         function PopulateDropDown(dropDownId, list) {
             $(dropDownId).empty();
-            $(dropDownId).append("<option>Sélectionner...</option>");
             //debugger;
+            $(dropDownId).append("<option>Sélectionner...</option>");            
             $.each(list, function (index, row) {
-                if (index == 0) {
-                    $(dropDownId).append("<option value='" + row.value + "' selected='selected'>" + row.text + "</option>");
-                } else {
-                    $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>");
-                }
+                $(dropDownId).append($('<option/>')
+                    .val(row.value)
+                    .text(row.text)
+                    .attr("selected", row.selected)
+                )
             });
-        }
+                // {
+                //     $(dropDownId).append("<option value='" + row.value + "'" + " selected='" + row.selected + "'> " + row.text + "</option>");
+                //     // if (index == 0) {
+                //     //     $(dropDownId).append("<option value='" + row.value + "' selected='selected'>" + row.text + "</option>");
+                //     // } else {
+                //     //     $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>");
+                //     // }
+                // });
+            }
     </script>
 }
