@@ -112,7 +112,10 @@
     @* UPD012 Boostrap datatable : format datatables *@
     <script>
         $(function () {
-            $('.table').DataTable();
+            $('.table').DataTable({
+                /* FIX11 : Disable bootstrap initial sort */
+                "aaSorting": []
+            });
             $(".datepicker").datepicker({
                 dateFormat: "yy-mm-dd"
             });

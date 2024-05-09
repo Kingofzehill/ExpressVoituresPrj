@@ -32,8 +32,8 @@
                     {
                         myYear = ViewData["AnneeMinimumVehicule"];
                     }                    
-                    <input asp-for="AnneeVehicule" class="form-control" value="@myYear" />
-                    <span asp-validation-for="AnneeVehicule" class="text-danger"></span>
+                        <input asp-for="AnneeVehicule" class="form-control" value="@myYear" />
+                        <span asp-validation-for="AnneeVehicule" class="text-danger"></span>
                 }                
             </div>
             @* Marque and Modele dropdownlist with cascade updates*@
@@ -45,7 +45,7 @@
                         var marqueSelectList = (SelectList)ViewData["Marque"];
                         List<SelectListItem> marqueSelectListItems = marqueSelectList.ToList();                        
                         marqueSelectListItems.Insert(0, (new SelectListItem { Text = "Sélectionner...", Value = "0", Selected = false }));
-                        @Html.DropDownList("Marque", marqueSelectListItems, new { @class = "form-control" })
+                            @Html.DropDownList("Marque", marqueSelectListItems, new { @class = "form-control" })
                     }
                 }                
             </div>
@@ -57,7 +57,7 @@
                         var modeleSelectList = (SelectList)ViewData["Modele"];
                         List<SelectListItem> modeleSelectListItems = modeleSelectList.ToList();
                         modeleSelectListItems.Insert(0, (new SelectListItem { Text = "Sélectionner...", Value = "0", Selected = false }));
-                        @Html.DropDownList("Modele", modeleSelectListItems, new { @class = "form-control" })
+                            @Html.DropDownList("Modele", modeleSelectListItems, new { @class = "form-control" })
                     }
                 }                
             </div>
@@ -74,24 +74,37 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateAchat" class="control-label"></label> *
-                <input asp-for="DateAchat" class="form-control" />
+                @* <input asp-for="DateAchat" class="form-control" /> *@
+                <input asp-for="DateAchat" class="form-control" value="@ViewData["DateAchat"]" />
                 <span asp-validation-for="DateAchat" class="text-danger"></span>                
             </div>
             <div class="form-group">
                 <label asp-for="DateMisEnVente" class="control-label"></label>
-                <input asp-for="DateMisEnVente" class="form-control" />
+                @* <input asp-for="DateMisEnVente" class="form-control" /> *@
+                <input asp-for="DateMisEnVente" class="form-control" value="@ViewData["DateMisEnVente"]" />
                 <span asp-validation-for="DateMisEnVente" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="DateVente" class="control-label"></label>
-                <input asp-for="DateVente" class="form-control" />
+                @* <input asp-for="DateVente" class="form-control" /> *@
+                <input asp-for="DateVente" class="form-control" value="@ViewData["DateVente"]" />
                 <span asp-validation-for="DateVente" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PrixAchat" class="control-label"></label> *
                 <input asp-for="PrixAchat" class="form-control" />
                 <span asp-validation-for="PrixAchat" class="text-danger"></span>
-            </div>            
+            </div>
+            <div class="form-group">
+                <label asp-for="listeReparations" class="control-label"></label>
+                <input asp-for="listeReparations" class="form-control" />
+                <span asp-validation-for="listeReparations" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CoutReparations" class="control-label"></label> *
+                <input asp-for="CoutReparations" class="form-control" />
+                <span asp-validation-for="CoutReparations" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Marge" class="control-label"></label>
                 @{
@@ -100,9 +113,9 @@
                     {
                         myMargis = ViewData["MargeMinimum"];
                     }
-                    @* <input asp-for="Marge" class="form-control" value="@ViewBag.marge" /> *@
-                    <input asp-for="Marge" class="form-control" value="@myMargis" />
-                    <span asp-validation-for="Marge" class="text-danger"></span>
+                        @* <input asp-for="Marge" class="form-control" value="@ViewBag.marge" /> *@
+                        <input asp-for="Marge" class="form-control" value="@myMargis" />
+                        <span asp-validation-for="Marge" class="text-danger"></span>
                 }
             </div>            
             <div class="form-group">
@@ -121,14 +134,14 @@
                 <input type="file" asp-for="Image.File" class="form-control" />
                 <span asp-validation-for="Image.File" class="text-danger"></span>
             </div>            
-            <div class="form-group">
+            <div class="form-group d-grid gap-2 col-6 mx-auto">
                 @{
                     var myActionToSale = (bool)ViewData["ActionEnVente"];
                     var myActionSold = (bool)ViewData["ActionVendu"];
 
                     if ((myActionToSale == false) || (myActionSold == false))
                     {
-                        <input type="submit" value="Sauvegarder Voiture" class="btn btn-success btn-sm" />
+                        <input type="submit" value="Sauvegarder Voiture" class="btn btn-success btn-sm btn-block" />
                     }
 
                     if (myActionToSale == true)
@@ -136,7 +149,7 @@
                         if (Model.Id != null)
                         {
                             var myCarId = Model.Id;
-                            <a asp-action="SetCarToSell" class="btn btn-warning btn-sm" asp-route-id="@myCarId">Mettre en vente</a>
+                            <a asp-action="SetCarToSell" class="btn btn-warning btn-sm btn-block" asp-route-id="@myCarId">Mettre en vente</a>
                         }
                     }
                     if (myActionSold == true)
@@ -144,11 +157,11 @@
                         if (Model.Id != null)
                         {
                             var myCarId = Model.Id;
-                            <a asp-action="SetCarSold" class="btn btn-warning btn-sm" asp-route-id="@myCarId">Vendu</a>
+                            <a asp-action="SetCarSold" class="btn btn-warning btn-sm btn-block" asp-route-id="@myCarId">Vendu</a>
                         }
                     }
                 }
-                <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Voitures</a>
+                <a asp-action="Index" class="btn btn-outline-dark btn-sm btn-block">Retour à la liste des Voitures</a>
             </div>
         </form>
     </div>
@@ -166,24 +179,26 @@
                 var value = $(this).val();
                 var id = $(this).attr("id");
                 //debugger;
-                $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
-                    switch (id) {
-                        case "Marque":
-                            //debugger;
-                            PopulateDropDown("#Modele", data);
-                            $("#Modele").val(0);
-                            $("#FinitionId").val(0);
-                            break;
-                        case "Modele":
-                            //debugger;
-                            PopulateDropDown("#FinitionId", data);
-                            break;
-                        case "FinitionId":
-                            //debugger;                            
-                            PopulateDropDown("#Marque", data);                            
-                            break;
-                    }
-                });
+                if (id != "Statut") { 
+                    $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
+                        switch (id) {
+                            case "Marque":
+                                //debugger;
+                                PopulateDropDown("#Modele", data);
+                                $("#Modele").val(0);
+                                $("#FinitionId").val(0);
+                                break;
+                            case "Modele":
+                                //debugger;
+                                PopulateDropDown("#FinitionId", data);
+                                break;
+                            case "FinitionId":
+                                //debugger;                            
+                                PopulateDropDown("#Marque", data);                            
+                                break;
+                        }
+                    });
+                }
             });
         });
         function PopulateDropDown(dropDownId, list) {

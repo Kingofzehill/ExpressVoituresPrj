@@ -25,10 +25,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.AnneeVehicule)
             </th>
-            <th>                
-                Image
-            </th>
             @* TD08 Vehicule index : add Marque et Modele*@
+             <th>
+                Marque
+            </th>
+            <th>
+                Modèle
+            </th> 
             <th>
                 @Html.DisplayNameFor(model => model.Finition)
             </th>
@@ -51,23 +54,9 @@
                     @Html.DisplayNameFor(model => model.Vin)
                 </th>
             }
-            @*
             <th>
-                @Html.DisplayNameFor(model => model.DateAchat)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrixAchat)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MisEnVente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Vendu)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateVente)
-            </th>
-            *@                   
+                Image
+            </th>                
             <th></th>
         </tr>
     </thead>
@@ -78,10 +67,15 @@
                 @Html.DisplayFor(modelItem => item.AnneeVehicule)
             </td>
             <td>
-                @* UPD13.6 image support in index Vehicule*@
-                @if (item.Image != null)
+                @if (item.Finition.Modele != null)
                 {
-                    <img src="@Url.Content(item.Image.Path)" width="96" height="96">
+                    @Html.DisplayFor(modelItem => item.Finition.Modele.LibelleModele)
+                }
+            </td>
+            <td>
+                @if (item.Finition.Modele?.Marque != null)
+                {
+                    @Html.DisplayFor(modelItem => item.Finition.Modele.Marque.LibelleMarque)
                 }
             </td>
             <td>
@@ -105,24 +99,13 @@
                     @Html.DisplayFor(modelItem => item.Vin)
                 </td>
             }
-            @*
             <td>
-                @Html.DisplayFor(modelItem => item.DateAchat)
+                @* UPD13.6 image support in index Vehicule*@
+                @if (item.Image != null)
+                {
+                    <img src="@Url.Content(item.Image.Path)" width="144" height="96">
+                }               
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrixAchat)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.MisEnVente)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vendu)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateVente)
-            </td>
-            *@
             <td>
                 @* TD10 Vehicule index, admin only : Editer & Supprimer actions *@
                 @if (User.IsInRole("Admin")) 

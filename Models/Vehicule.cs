@@ -62,8 +62,9 @@ namespace ExpressVoitures.Models
         
         [Required(ErrorMessage = "Saisir {0}")]
         [Display(Name = "Date d'achat")]
-        [DataType(DataType.Date)]        
-        [DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]        
+        [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "{0:dd MMMM yyyy}", ApplyFormatInEditMode = true)]        
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DateAchat { get; set; }
 
         [Required(ErrorMessage = "Saisir {0}")]
@@ -79,6 +80,16 @@ namespace ExpressVoitures.Models
         [Display(Name = "Année")]        
         [Range(1990, 2024, ErrorMessage = "L'{0} doit être entre {1} et {2}")]        
         public int AnneeVehicule { get; set; }
+
+        [Display(Name = "Liste des réparations")]
+        [StringLength(400, ErrorMessage = "{0} est limité à {1} caractères")]
+        public string? listeReparations { get; set; }
+
+        [Display(Name = "Coût Réparations")]
+        [Column(TypeName = "decimal(7, 2)")]
+        [DataType(DataType.Currency)]        
+        [RegularExpression(@"^[0-9]+((\.)[0-9]+)*$", ErrorMessage = "Saisir un {0} au format XXXXX.XX")]
+        public decimal? CoutReparations { get; set; }
 
         [Display(Name = "Prix de vente")]
         [Column(TypeName = "decimal(7, 2)")]
@@ -124,5 +135,7 @@ namespace ExpressVoitures.Models
         public bool MisEnVente { get; set; } = false;
         
         public bool Vendu { get; set; } = false;
+
+        public bool Indisponible { get; set; } = false;
     }
 }

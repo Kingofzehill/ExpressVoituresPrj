@@ -195,8 +195,7 @@ namespace ExpressVoitures.Models
                         //Id = 1, 2013 Ford Edge SEL
                         Vin = "VF7SBHMZ0EW554821",
                         Statut = VehiculeStatuts.EnVente,
-                        Information = "très bon état général",
-                        //Photo = null,
+                        Information = "Très bon état général. Pneus et freins neufs. Recharge climtisation.",                        
                         DateAchat = new DateTime(2023, 09, 10, 00, 00, 00),
                         PrixAchat = 10990.00M,
                         AnneeVehicule = 2013,
@@ -206,6 +205,8 @@ namespace ExpressVoitures.Models
                         Vendu = false,
                         DateVente = null,
                         DateMisAJour = DateTime.Now,
+                        listeReparations = "Pneus, freins, climatisation",
+                        CoutReparations = 950.00M,
                         Marge = 500.00M,
                         FinitionId = 1
                     },                    
@@ -214,8 +215,7 @@ namespace ExpressVoitures.Models
                         //Id = 2, 2016 Volkswagen GTI S
                         Vin = "VF7SBHMZ0EW554822",
                         Statut = VehiculeStatuts.EnVente,
-                        Information = "",
-                        //Photo = null,
+                        Information = "Pneus neufs.",                        
                         DateAchat = new DateTime(2023, 06, 12, 00, 00, 00),
                         PrixAchat = 15250.10M,
                         AnneeVehicule = 2016,
@@ -225,6 +225,8 @@ namespace ExpressVoitures.Models
                         Vendu = false,
                         DateVente = null,
                         DateMisAJour = DateTime.Now,
+                        listeReparations = "Pneus",
+                        CoutReparations = 440.00M,
                         Marge = 500.00M,
                         FinitionId = 2
                     },
@@ -233,8 +235,7 @@ namespace ExpressVoitures.Models
                         //Id = 3, 2017 Ford Explorer XLT
                         Vin = "VF7SBHMZ0EW554823",
                         Statut = VehiculeStatuts.EnVente,
-                        Information = "Etat quasi neuf",
-                        //Photo = null,
+                        Information = "Etat quasi neuf.",                        
                         DateAchat = new DateTime(2023, 12, 30, 00, 00, 00),
                         PrixAchat = 24350.00M,
                         AnneeVehicule = 2017,
@@ -244,6 +245,8 @@ namespace ExpressVoitures.Models
                         Vendu = false,
                         DateVente = null,
                         DateMisAJour = DateTime.Now,
+                        listeReparations = "Pneus, freins",
+                        CoutReparations = 1100.00M,
                         Marge = 500.00M,
                         FinitionId = 3
                     },
@@ -252,7 +255,7 @@ namespace ExpressVoitures.Models
                         //Id = 4, 2008 Honda Civic LX
                         Vin = "VF7SBHMZ0EW554824",
                         Statut = VehiculeStatuts.EnVente,
-                        Information = "",
+                        Information = "Freins neufs. Recharge climatisation.",
                         //Photo = null,
                         DateAchat = new DateTime(2023, 06, 04, 00, 00, 00),
                         PrixAchat = 4000.00M,
@@ -263,6 +266,8 @@ namespace ExpressVoitures.Models
                         Vendu = false,
                         DateVente = null,
                         DateMisAJour = DateTime.Now,
+                        listeReparations = "climatisation, freins",
+                        CoutReparations = 475.00M,
                         Marge = 500.00M,
                         FinitionId = 4
                     },
@@ -271,7 +276,7 @@ namespace ExpressVoitures.Models
                         //Id = 5, 2017 Renault Scénic TCe
                         Vin = "VF7SBHMZ0EW554825",
                         Statut = VehiculeStatuts.EnVente,
-                        Information = "",
+                        Information = "Bon état général. Freins neufs, remplacement radiateur.",
                         //Photo = null,
                         DateAchat = new DateTime(2023, 11, 30, 00, 00, 00),
                         PrixAchat = 1809.99M,
@@ -282,6 +287,8 @@ namespace ExpressVoitures.Models
                         Vendu = false,
                         DateVente = null,
                         DateMisAJour = DateTime.Now,
+                        listeReparations = "Radiateur, freins",
+                        CoutReparations = 690.00M,
                         Marge = 500.00M,
                         FinitionId = 5
                     },
@@ -290,7 +297,7 @@ namespace ExpressVoitures.Models
                         //Id = 6, 2019 Mazda Miata LE
                         Vin = "VF7SBHMZ0EW554826",
                         Statut = VehiculeStatuts.EnVente,
-                        Information = "",
+                        Information = "Occasion à saisir. Restauration complète. Pack Sport.",
                         //Photo = null,
                         DateAchat = new DateTime(2024, 02, 05, 00, 00, 00),
                         PrixAchat = 1800.00M,
@@ -301,6 +308,8 @@ namespace ExpressVoitures.Models
                         Vendu = false,
                         DateVente = null,
                         DateMisAJour = DateTime.Now,
+                        listeReparations = "Restauration complète",
+                        CoutReparations = 7600.00M,
                         Marge = 500.00M,
                         FinitionId = 6
                     },
@@ -309,7 +318,7 @@ namespace ExpressVoitures.Models
                         //Id = 7, 2007 Jeep Liberty Sport
                         Vin = "VF7SBHMZ0EW554827",
                         Statut = VehiculeStatuts.EnVente,
-                        Information = "",
+                        Information = "Changement des roulements roues avant.",
                         //Photo = null,
                         DateAchat = new DateTime(2024, 01, 05, 00, 00, 00),
                         PrixAchat = 4500.00M,
@@ -320,6 +329,8 @@ namespace ExpressVoitures.Models
                         Vendu = false,
                         DateVente = null,
                         DateMisAJour = DateTime.Now,
+                        listeReparations = "Roulements des roues avant",
+                        CoutReparations = 350.00M,
                         Marge = 500.00M,
                         FinitionId = 7
                     },
@@ -328,7 +339,7 @@ namespace ExpressVoitures.Models
                         //Id = 8, 2010 Honda Civic Lx
                         Vin = "VF7SBHMZ0EW554828",
                         Statut = VehiculeStatuts.EnVente,
-                        Information = "",
+                        Information = "Faible kilométrage (54 000 km).",
                         //Photo = null,
                         DateAchat = new DateTime(2024, 03, 04, 00, 00, 00),
                         PrixAchat = 6500.00M,
@@ -339,6 +350,8 @@ namespace ExpressVoitures.Models
                         Vendu = false,
                         DateVente = null,
                         DateMisAJour = DateTime.Now,
+                        listeReparations = "",
+                        CoutReparations = 0,
                         Marge = 500.00M,
                         FinitionId = 4
                     }
@@ -397,80 +410,68 @@ namespace ExpressVoitures.Models
                         new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554821").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Pneus").Id,
-                            CoutReparation = 450.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Pneus").Id
                         },
                         new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554821").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Freins").Id,
-                            CoutReparation = 300.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Freins").Id
                         },
                         new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554821").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Climatisation").Id,
-                            CoutReparation = 200.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Climatisation").Id
                         },
                         // 2016 Volkswagen GTI S 
                         new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554822").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Pneus").Id,
-                            CoutReparation = 440.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Pneus").Id
                         },
                         // 2017 Ford Explorer XLT
                         new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554823").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Pneus").Id,
-                            CoutReparation = 600.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Pneus").Id
                         },
                         new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554823").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Freins").Id,
-                            CoutReparation = 500.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Freins").Id
                         },
                         // 2008 Honda Civic LX
                         new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554824").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Climatisation").Id,
-                            CoutReparation = 200.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Climatisation").Id
                         },
                          new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554824").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Freins").Id,
-                            CoutReparation = 275.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Freins").Id
                         },
                         // 2017 Renault Scénic TCe
                         new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554825").Id,
                             ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Radiateur").Id,
-                            CoutReparation = 400.00M
                         },
                          new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554825").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Freins").Id,
-                            CoutReparation = 290.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Freins").Id
                         },
                         // 2019 Mazda Miata LE
                         new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554826").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Restauration Complète").Id,
-                            CoutReparation = 7600.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Restauration Complète").Id
                         },
                         //2007 Jeep Liberty Sport
                         new ReparationVehicule
                         {
                             VehiculesId = context.Vehicule.Single(c => c.Vin == "VF7SBHMZ0EW554827").Id,
-                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Roulements des roues avant").Id,
-                            CoutReparation = 350.00M
+                            ReparationsId = context.Reparation.Single(i => i.LibelleReparation == "Roulements des roues avant").Id
                         }
                     };
                     

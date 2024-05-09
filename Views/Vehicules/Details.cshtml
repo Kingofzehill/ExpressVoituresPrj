@@ -32,6 +32,18 @@
             @Html.DisplayFor(model => model.AnneeVehicule)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Finition.Modele.Marque)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Finition.Modele.Marque.LibelleMarque)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Finition.Modele)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Finition.Modele.LibelleModele)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Finition)
         </dt>
         <dd class="col-sm-10">
@@ -73,6 +85,18 @@
                 @Html.DisplayFor(model => model.PrixAchat)
             </dd>
             <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.listeReparations)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.listeReparations)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CoutReparations)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CoutReparations)
+            </dd>
+            <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Marge)
             </dt>
             <dd class="col-sm-10">
@@ -87,7 +111,7 @@
         }
     </dl>
 </div>
-<div>
+<div class="d-grid gap-2 col-6 mx-auto">
     <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
     <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Voitures</a>
 </div>

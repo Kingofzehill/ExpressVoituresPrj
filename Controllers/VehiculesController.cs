@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using ExpressVoitures.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Newtonsoft.Json.Linq;
 
 
 namespace ExpressVoitures.Controllers
@@ -30,7 +31,26 @@ namespace ExpressVoitures.Controllers
         public async Task<IActionResult> Index()
         {
             // UPD13.7 image support in Vehicule Controller method index
-            var expressVoituresContext = _context.Vehicule.Include(v => v.Finition).Include(c => c.Image);
+            //var expressVoituresContext = _context.Vehicule.Include(v => v.Finition).Include(c => c.Image);
+            var expressVoituresContext = _context.Vehicule.Where(m => m.Statut == VehiculeStatuts.EnVente).OrderByDescending(x => x.AnneeVehicule).Include(c => c.Image).Include(v => v.Finition);
+            if (User.IsInRole("Admin"))
+            {                
+                expressVoituresContext = _context.Vehicule.OrderByDescending(x => x.DateMisAJour).Include(c => c.Image).Include(v => v.Finition);
+                //expressVoituresContext = _context.Vehicule
+                        //.Include(c => c.Image)
+                        //.Include(v => v.Finition)
+                              //.ThenInclude(v => v.Modele);
+                              //.ThenInclude(y => y.Marque)
+                        //.AsNoTracking()
+                        //.OrderByDescending(x => x.DateMisAJour)
+                        //.ToListAsync(); 
+
+
+                //expressVoituresContext = _context.Vehicule.OrderByDescending(x => x.DateMisAJour)
+                //    .Include(c => c.Image)
+                //    .Include(v => v.Finition)
+                //    .Join(_context.Modele, u => u.FinitionId, s => s.Id, (u,s) => s);
+            }
             return View(await expressVoituresContext.ToListAsync());
         }
 
@@ -74,7 +94,7 @@ namespace ExpressVoitures.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Vin,Statut,Information,DateAchat,PrixAchat,AnneeVehicule,PrixDeVente,DateMisEnVente,DateVente,FinitionId,Marge,Image,MisEnVente,Vendu,ActionEnVente,AnneeMinimumVehicule,MargeMinimum,ActionVendu,Marque,Modele")] Vehicule vehicule)
+        public async Task<IActionResult> Create([Bind("Id,Vin,Statut,Information,DateAchat,PrixAchat,AnneeVehicule,PrixDeVente,DateMisEnVente,DateVente,FinitionId,Marge,Image,MisEnVente,Vendu,ActionEnVente,AnneeMinimumVehicule,MargeMinimum,ActionVendu,Marque,Modele,CoutReparations,Indisponible,listeReparations")] Vehicule vehicule)
         {
             // ignore navigation property
             ModelState.Remove(nameof(Vehicule.Finition));            
@@ -85,7 +105,7 @@ namespace ExpressVoitures.Controllers
                 try
                 {
                     // UPD13.4 create image support
-                    if (vehicule.Image.File != null)
+                    if (vehicule.Image != null)
                     {
                         vehicule.Image = await _imageService.UploadAsync(vehicule.Image);
                     }
@@ -142,7 +162,7 @@ namespace ExpressVoitures.Controllers
             // Cascading dropdownlist Marque / Modele.
             if (vehicule.FinitionId != 0)
             {
-                var modelId = vehicule.Finition.ModeleId;                
+                var modelId = _context.Finition.Single(c => c.Id == vehicule.FinitionId).ModeleId;
                 var brandId = _context.Modele.Single(c => c.Id == modelId).MarqueId;
                 ViewData["Marque"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", brandId);
                 ViewData["Modele"] = new SelectList(_context.Set<Modele>().Where(m => m.MarqueId == brandId).OrderBy(x => x.LibelleModele), "Id", "LibelleModele", modelId);
@@ -251,7 +271,7 @@ namespace ExpressVoitures.Controllers
             }
             myVehicule.DateMisAJour = DateTime.Now;
             myVehicule.Statut = VehiculeStatuts.Vendu;
-            //myVehicule.MisEnVente = false;
+            myVehicule.MisEnVente = true;
             myVehicule.Vendu = true;
             _context.Update(myVehicule);
             await _context.SaveChangesAsync();
@@ -272,9 +292,17 @@ namespace ExpressVoitures.Controllers
                 return NotFound();
             }            
             ViewData["AnneeMinimumVehicule"] = carYearMinimum;
-            ViewData["MargeMinimum"] = margisMinimum;            
+            ViewData["MargeMinimum"] = margisMinimum;
+            ViewData["AnneeVehicule"] = vehicule.AnneeVehicule;
+            ViewData["Marge"] = vehicule.Marge;
+            ViewData["DateAchat"] = vehicule.DateAchat.ToString("yyyy-MM-dd");
+            //FIX10.1 manage date format for nullable date field
+            ViewData["DateMisEnVente"] = vehicule.DateMisEnVente?.ToString("yyyy-MM-dd");
+            ViewData["DateVente"] = vehicule.DateVente?.ToString("yyyy-MM-dd");
             ViewData["ActionEnVente"] = false;
             ViewData["ActionVendu"] = false;
+            ViewData["Image"] = vehicule.Image?.File;
+            ViewData["Statut"] = vehicule.Statut;
             // Displays "Mettre en vente" action
             if ((vehicule.MisEnVente == false) && (_vehiculeService.CarToSaleButtonDisplay(vehicule) == true))
             {
@@ -288,7 +316,7 @@ namespace ExpressVoitures.Controllers
             // Cascading dropdownlist Marque / Modele.
             if (vehicule.FinitionId != 0)
             {
-                var modelId = vehicule.Finition.ModeleId;
+                var modelId = _context.Finition.Single(c => c.Id == vehicule.FinitionId).ModeleId;
                 var brandId = _context.Modele.Single(c => c.Id == modelId).MarqueId;
                 ViewData["Marque"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", brandId);
                 ViewData["Modele"] = new SelectList(_context.Set<Modele>().Where(m => m.MarqueId == brandId).OrderBy(x => x.LibelleModele), "Id", "LibelleModele", modelId);
@@ -309,7 +337,7 @@ namespace ExpressVoitures.Controllers
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Vin,Statut,Information,DateAchat,PrixAchat,AnneeVehicule,PrixDeVente,DateMisEnVente,DateVente,FinitionId,Marge,Image,MisEnVente,Vendu,ActionEnVente,AnneeMinimumVehicule,MargeMinimum,ActionVendu,Marque,Modele")] Vehicule vehicule)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Vin,Statut,Information,DateAchat,PrixAchat,AnneeVehicule,PrixDeVente,DateMisEnVente,DateVente,FinitionId,Marge,Image,MisEnVente,Vendu,ActionEnVente,AnneeMinimumVehicule,MargeMinimum,ActionVendu,Marque,Modele,CoutReparations,Indisponible,listeReparations")] Vehicule vehicule)
         {
             if (id != vehicule.Id)
             {
@@ -324,10 +352,11 @@ namespace ExpressVoitures.Controllers
                 try
                 {
                     vehicule.DateMisAJour = DateTime.Now;
+                    //vehicule.Statut = _context.Vehicule.Single(c => c.Id == id).Statut;
                     try
                     {
                         // UPD13.4 create image support
-                        if (vehicule.Image.File != null)
+                        if (vehicule.Image != null)
                         {
                             vehicule.Image = await _imageService.UploadAsync(vehicule.Image);
                         }
@@ -383,7 +412,7 @@ namespace ExpressVoitures.Controllers
             // Cascading dropdonwlists Marque / Modele.
             if (vehicule.FinitionId != 0)
             {
-                var modelId = vehicule.Finition.ModeleId;
+                var modelId = _context.Finition.Single(c => c.Id == vehicule.FinitionId).ModeleId;
                 var brandId = _context.Modele.Single(c => c.Id == modelId).MarqueId;
                 ViewData["Marque"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", brandId);
                 ViewData["Modele"] = new SelectList(_context.Set<Modele>().Where(m => m.MarqueId == brandId).OrderBy(x => x.LibelleModele), "Id", "LibelleModele", modelId);

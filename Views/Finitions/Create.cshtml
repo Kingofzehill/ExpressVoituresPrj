@@ -55,7 +55,7 @@
             $("#dropDownListdiv").on("change", "select", function () {
                 var value = $(this).val();
                 var id = $(this).attr("id");
-                debugger;
+                //debugger;
                 $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
                     switch (id) {
                         case "Marque":

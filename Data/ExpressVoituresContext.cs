@@ -21,9 +21,7 @@ namespace ExpressVoitures.Data
         {
             modelBuilder.Entity<ReparationVehicule>().ToTable("ReparationVehicule");
 
-            //Define composite key
-            /*modelBuilder.Entity<ReparationVehicule>()
-                  .HasKey(m => new { m.VehiculesId, m.ReparationsId});*/
+            //Define composite key ReparationVehicule
             modelBuilder.Entity<Vehicule>()
                 .HasMany(e => e.Reparations)
                 .WithMany(e => e.Vehicules)
@@ -33,6 +31,14 @@ namespace ExpressVoitures.Data
                 .HasMany(e => e.Vehicules)
                 .WithMany(e => e.Reparations)
                 .UsingEntity<ReparationVehicule>();
+
+            // FIX11 auto include of modele and marque for related data navigation
+            modelBuilder.Entity<Finition>().Navigation(e => e.Modele).AutoInclude();
+            modelBuilder.Entity<Modele>().Navigation(e => e.Marque).AutoInclude();
+            // Auto include Image, Finition, repation related date to Vehicule
+            modelBuilder.Entity<Vehicule>().Navigation(e => e.Finition).AutoInclude();
+            modelBuilder.Entity<Vehicule>().Navigation(e => e.Image).AutoInclude();
+            modelBuilder.Entity<Vehicule>().Navigation(e => e.Reparations).AutoInclude();
         }
 
 

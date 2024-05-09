@@ -93,14 +93,34 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 // FIX08 add locolization fr-FR (for managing comma separator in Prices)
+//      ==> not enought for supporting comma as decimal separator
+//      ==> To support jQuery validation for non-English locales that use a comma (",") for a decimal point, and non US-English date formats, you must take steps to globalize your app 
 //      https://github.com/dotnet/AspNetCore.Docs/issues/4076
-var defaultCulture = new CultureInfo("fr-FR");
+//      https://stackoverflow.com/questions/48066208/mvc-jquery-validation-does-not-accept-comma-as-decimal-separator
+//      https://stackoverflow.com/questions/64236450/fixing-the-field-price-must-be-a-number-in-microsoft-net-core-asp-net-tuto
+/* var defaultCulture = new CultureInfo("fr-FR"); // CultureInfo("en-US");
+defaultCulture.NumberFormat.CurrencySymbol = "€";
+defaultCulture.NumberFormat.CurrencyDecimalSeparator = ",";
 var localizationOptions = new RequestLocalizationOptions
 {
     DefaultRequestCulture = new RequestCulture(defaultCulture),
     SupportedCultures = new List<CultureInfo> { defaultCulture },
-    SupportedUICultures = new List<CultureInfo> { defaultCulture }
+    SupportedUICultures = new List<CultureInfo> { defaultCulture },
 };
-app.UseRequestLocalization("fr-FR");
+CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+app.UseRequestLocalization("fr-FR");*/
+var defaultCulture = new CultureInfo("en-US"); // CultureInfo("en-US");
+defaultCulture.NumberFormat.CurrencySymbol = "€";
+defaultCulture.NumberFormat.CurrencyDecimalSeparator = ".";
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(defaultCulture),
+    SupportedCultures = new List<CultureInfo> { defaultCulture },
+    SupportedUICultures = new List<CultureInfo> { defaultCulture },
+};
+CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+app.UseRequestLocalization("en-US");
 
 app.Run();
