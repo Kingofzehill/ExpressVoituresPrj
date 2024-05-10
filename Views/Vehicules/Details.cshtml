@@ -1,10 +1,10 @@
 ﻿@model ExpressVoitures.Models.Vehicule
 
 @{
-    ViewData["Title"] = "Détails";
+    ViewData["Title"] = "Consulter";
 }
 
-<h1>Détails Voiture</h1>
+<h1>Consulter Voiture</h1>
 
 <div>
     @* <h4>Voiture</h4> *@
@@ -101,17 +101,20 @@
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Marge)
-            </dd>            
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PrixDeVente)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PrixDeVente)
-            </dd>            
+            </dd>                       
         }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PrixDeVente)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PrixDeVente)
+        </dd>
     </dl>
 </div>
 <div class="d-grid gap-2 col-6 mx-auto">
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
+    }
     <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Voitures</a>
 </div>

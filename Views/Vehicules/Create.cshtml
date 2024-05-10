@@ -138,27 +138,32 @@
                 @{
                     var myActionToSale = (bool)ViewData["ActionEnVente"];
                     var myActionSold = (bool)ViewData["ActionVendu"];
+                    var myActionAvailabilty = (int)ViewData["ActionDisponibilite"];
 
-                    if ((myActionToSale == false) || (myActionSold == false))
-                    {
-                        <input type="submit" value="Sauvegarder Voiture" class="btn btn-success btn-sm btn-block" />
-                    }
+                    <input type="submit" value="Sauvegarder Voiture" class="btn btn-success btn-sm btn-block" />
 
                     if (myActionToSale == true)
                     {
-                        if (Model.Id != null)
-                        {
-                            var myCarId = Model.Id;
-                            <a asp-action="SetCarToSell" class="btn btn-warning btn-sm btn-block" asp-route-id="@myCarId">Mettre en vente</a>
-                        }
+                        var myCarId = Model.Id;
+                        <a asp-action="SetCarToSell" class="btn btn-warning btn-sm btn-block" asp-route-id="@myCarId">Mettre en vente</a>
                     }
                     if (myActionSold == true)
                     {
-                        if (Model.Id != null)
+                        var myCarId = Model.Id;
+                        <a asp-action="SetCarSold" class="btn btn-warning btn-sm btn-block" asp-route-id="@myCarId">Vendu</a>
+                    }
+                    if (myActionAvailabilty > 0)
+                    {
+                        var myCarId = Model.Id;
+                        if (myActionAvailabilty == 1)
                         {
-                            var myCarId = Model.Id;
-                            <a asp-action="SetCarSold" class="btn btn-warning btn-sm btn-block" asp-route-id="@myCarId">Vendu</a>
+                            <a asp-action="SetCarUnavailable" class="btn btn-info btn-sm btn-block" asp-route-id="@myCarId">Non disponible</a>
                         }
+                        else
+                        {
+                            <a asp-action="SetCarAvailable" class="btn btn-info btn-sm btn-block" asp-route-id="@myCarId">Disponible</a>
+                        }
+
                     }
                 }
                 <a asp-action="Index" class="btn btn-outline-dark btn-sm btn-block">Retour à la liste des Voitures</a>
