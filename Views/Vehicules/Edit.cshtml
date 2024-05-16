@@ -12,14 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            @*FIX001.1 displays enum values list*@
-@*             <div class="form-group">
-                <label asp-for="Statut" class="control-label"></label>                
-                <select asp-for="Statut" asp-items="Html.GetEnumSelectList<VehiculeStatuts>()">                    
-                </select>
-                <span asp-validation-for="Statut" class="text-danger"></span>
-            </div> *@
+            <input type="hidden" asp-for="Id" />            
             <div class="form-group">
                 <label asp-for="Statut" class="control-label"></label>
                 <input asp-for="Statut" class="form-control" value="@ViewData["Statut"]" />
@@ -42,7 +35,7 @@
                     <span asp-validation-for="AnneeVehicule" class="text-danger"></span>
                 }
             </div>
-            @* Marque and Modele dropdownlist with cascade updates*@
+            @* Marque and Modele dropdownlists with cascade updates.*@
             <div class="form-group">
                 @{
                     if (ViewData["Marque"] != null)
@@ -79,24 +72,16 @@
             </div>            
             <div class="form-group">
                 <label asp-for="DateAchat" class="control-label"></label> *
-                <input asp-for="DateAchat" class="form-control" value="@ViewData["DateAchat"]" />
-                @* @{
-                    var myDateAchat = ViewData["DateAchat"];
-                    <input asp-for="DateAchat" class="form-control" value="@myDateAchat" />
-                    <input asp-for="DateAchat" class="form-control" value="@ViewData["DateAchat"]" />
-                    // @Html.TextBoxFor(model => model.DateAchat, "{0:yyyy-MM-dd}", new { @class = "form-control input-sm datepicker", @type = "date", placeholder = "Date achat", id = "txtDateAchat", max = DateTime.Today.ToString("yyyy-MM-dd") })
-                } *@                
+                <input asp-for="DateAchat" class="form-control" value="@ViewData["DateAchat"]" />                
                 <span asp-validation-for="DateAchat" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateMisEnVente" class="control-label"></label>
-                @* <input asp-for="DateMisEnVente" class="form-control" /> *@
+                <label asp-for="DateMisEnVente" class="control-label"></label>                
                 <input asp-for="DateMisEnVente" class="form-control" value="@ViewData["DateMisEnVente"]" />
                 <span asp-validation-for="DateMisEnVente" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateVente" class="control-label"></label>
-                @* <input asp-for="DateVente" class="form-control" /> *@
+                <label asp-for="DateVente" class="control-label"></label>                
                 <input asp-for="DateVente" class="form-control" value="@ViewData["DateVente"]" />
                 <span asp-validation-for="DateVente" class="text-danger"></span>
             </div>
@@ -122,8 +107,7 @@
                     if (myMargis == null)
                     {
                         myMargis = ViewData["MargeMinimum"];
-                    }
-                    @* <input asp-for="Marge" class="form-control" value="@ViewBag.marge" /> *@
+                    }                    
                     <input asp-for="Marge" class="form-control" value="@myMargis" />
                     <span asp-validation-for="Marge" class="text-danger"></span>
                 }
@@ -186,7 +170,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        @*statut dropdownlist readonly*@
+        @* Statut dropdownlist readonly.*@
         $("#Statut").attr("readonly", "readonly");
 
         $(function () {
@@ -197,18 +181,15 @@
                 if (id != "Statut") {
                     $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
                         switch (id) {
-                            case "Marque":
-                                //debugger;
+                            case "Marque":                                
                                 PopulateDropDown("#Modele", data);
                                 PopulateDropDown("#FinitionId", data);
                                 break;
-                            case "Modele":
-                                //debugger;
+                            case "Modele":                                
                                 PopulateDropDown("#Marque", data);
                                 PopulateDropDown("#FinitionId", data);
                                 break;
-                            case "ModeleId":
-                                //debugger;
+                            case "ModeleId":                                
                                 PopulateDropDown("#Marque", data);
                                 PopulateDropDown("#FinitionId", data);
                                 break;
@@ -228,6 +209,12 @@
                     .attr("selected", row.selected)
                 )
             });
+        }
+
+        // FIX13 JQuery client side validation rule for managing
+        // comma as decimal separator (the regex swaps the dot and comma)
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:\.\d{3})+)?(?:,\d+)?$/.test(value);
         }
     </script>
 }

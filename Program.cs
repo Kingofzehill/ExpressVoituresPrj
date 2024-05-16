@@ -1,126 +1,118 @@
-﻿using ExpressVoitures.Data;
+using ExpressVoitures.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ExpressVoitures.Models;
 using ExpressVoitures.Services;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using ExpressVoitures.Controllers;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<ExpressVoituresContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ExpressVoituresContext") ?? throw new InvalidOperationException("Connection string 'ExpressVoituresContext' not found.")));
+    var builder = WebApplication.CreateBuilder(args);
+    builder.Services.AddDbContext<ExpressVoituresContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("ExpressVoituresContext") ?? throw new InvalidOperationException("Connection string 'ExpressVoituresContext' not found.")));
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+    // Add services to the container.
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(connectionString));
+    builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+    
+    builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+        .AddRoles<IdentityRole>() //UserIdentity mngt
+        .AddEntityFrameworkStores<ApplicationDbContext>();
+    builder.Services.AddControllersWithViews();
 
-//UPD08 UserIdentity mngt, old : builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddRoles<IdentityRole>() //UserIdentity mngt
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+    // Dependency injections for PathService / ImageService / VehiculeService.
+    //      https://stackoverflow.com/questions/51691211/asp-net-adding-apicontroller-as-service-for-dependency-injection
+    builder.Services.AddSingleton<PathService>();
+    builder.Services.AddSingleton<ImageService>();
+    builder.Services.AddSingleton<VehiculeService>();
+    // FIX12 adding controller services for use in services classes ==> circular dependencies ==> Refactoring code needed.    
 
-// UPD13.3 dependency injections for PathService / ImageService / VehiculeService
-builder.Services.AddSingleton<PathService>();
-builder.Services.AddSingleton<ImageService>();
-builder.Services.AddSingleton<VehiculeService>();
+    var app = builder.Build();
 
-var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    // Initialize ExpressVoitures datas test records 
-    SeedData.Initialize(services);
-
-    //UserIdentity mngt
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-    var roleExist = await roleManager.RoleExistsAsync("Admin");
-    if (!roleExist)
+    using (var scope = app.Services.CreateScope())
     {
-        await roleManager.CreateAsync(new IdentityRole("Admin"));
-    }
+        var services = scope.ServiceProvider;
+        // Initialize ExpressVoitures datas test records 
+        SeedData.Initialize(services);
 
-    var adminUser = await userManager.FindByEmailAsync("jacques@expressvoitures.fr");
-    if (adminUser == null)
-    {
-        adminUser = new IdentityUser
-        {
-            UserName = "jacques@expressvoitures.fr",
-            Email = "jacques@expressvoitures.fr",
-        };
-        //Console.WriteLine("admin user creation...");
+        //UserIdentity mngt
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-        var admin = await userManager.CreateAsync(adminUser, "Admin@123");
-        if (admin.Succeeded)
+        var roleExist = await roleManager.RoleExistsAsync("Admin");
+        if (!roleExist)
         {
-            await userManager.AddToRoleAsync(adminUser, "Admin");
-            //Console.WriteLine("Admin user created {0}", adminUser.UserName);
+            await roleManager.CreateAsync(new IdentityRole("Admin"));
         }
-        await userManager.AddToRoleAsync(adminUser, "Admin");
+
+        var adminUser = await userManager.FindByEmailAsync("jacques@expressvoitures.fr");
+        if (adminUser == null)
+        {
+            adminUser = new IdentityUser
+            {
+                UserName = "jacques@expressvoitures.fr",
+                Email = "jacques@expressvoitures.fr",
+            };            
+            var admin = await userManager.CreateAsync(adminUser, "Admin@123");
+            if (admin.Succeeded)
+            {
+                await userManager.AddToRoleAsync(adminUser, "Admin");                
+            }
+            await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
     }
-}
 
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseMigrationsEndPoint();
-}
-else
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseMigrationsEndPoint();
+    }
+    else
+    {
+        app.UseExceptionHandler("/Home/Error");
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+    }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
 
-app.UseRouting();
+    app.UseRouting();
 
-app.UseAuthorization();
+    app.UseAuthorization();
 
-// UPD06 ControllerRoute for Home to Vehicules Controller
-app.MapControllerRoute(
-    name: "default",
-    //pattern: "{controller=Home}/{action=Index}/{id?}");
-    pattern: "{controller=Vehicules}/{action=Index}/{id?}");
-app.MapRazorPages();
+    // UPD06 ControllerRoute for Home to Vehicules Controller
+    app.MapControllerRoute(
+        name: "default",
+        //pattern: "{controller=Home}/{action=Index}/{id?}");
+        pattern: "{controller=Vehicules}/{action=Index}/{id?}");
+    app.MapRazorPages();
 
-// FIX08 add locolization fr-FR (for managing comma separator in Prices)
-//      ==> not enought for supporting comma as decimal separator
-//      ==> To support jQuery validation for non-English locales that use a comma (",") for a decimal point, and non US-English date formats, you must take steps to globalize your app 
-//      https://github.com/dotnet/AspNetCore.Docs/issues/4076
-//      https://stackoverflow.com/questions/48066208/mvc-jquery-validation-does-not-accept-comma-as-decimal-separator
-//      https://stackoverflow.com/questions/64236450/fixing-the-field-price-must-be-a-number-in-microsoft-net-core-asp-net-tuto
-/* var defaultCulture = new CultureInfo("fr-FR"); // CultureInfo("en-US");
-defaultCulture.NumberFormat.CurrencySymbol = "€";
-defaultCulture.NumberFormat.CurrencyDecimalSeparator = ",";
-var localizationOptions = new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture(defaultCulture),
-    SupportedCultures = new List<CultureInfo> { defaultCulture },
-    SupportedUICultures = new List<CultureInfo> { defaultCulture },
-};
-CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
-CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
-app.UseRequestLocalization("fr-FR");*/
-var defaultCulture = new CultureInfo("en-US"); // CultureInfo("en-US");
-defaultCulture.NumberFormat.CurrencySymbol = "€";
-defaultCulture.NumberFormat.CurrencyDecimalSeparator = ".";
-var localizationOptions = new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture(defaultCulture),
-    SupportedCultures = new List<CultureInfo> { defaultCulture },
-    SupportedUICultures = new List<CultureInfo> { defaultCulture },
-};
-CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
-CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
-app.UseRequestLocalization("en-US");
+    // FIX08 add locolization fr-FR (for managing comma separator in Prices)
+    //      ==> globalize your app for perfect culture management with jquery (client side)
+    //      https://github.com/dotnet/AspNetCore.Docs/issues/4076
+    //      https://stackoverflow.com/questions/48066208/mvc-jquery-validation-does-not-accept-comma-as-decimal-separator
+    // var defaultCulture = new CultureInfo("en-US"); 
+    var defaultCulture = new CultureInfo("fr-FR"); 
+    defaultCulture.NumberFormat.CurrencySymbol = "€";
+    //defaultCulture.NumberFormat.CurrencyDecimalSeparator = ".";
+    defaultCulture.NumberFormat.CurrencyDecimalSeparator = ",";
+    //defaultCulture.NumberFormat.NumberDecimalSeparator = ".";
+    defaultCulture.NumberFormat.NumberDecimalSeparator = ",";
+    var localizationOptions = new RequestLocalizationOptions
+    {
+        DefaultRequestCulture = new RequestCulture(defaultCulture),
+        SupportedCultures = new List<CultureInfo> { defaultCulture },
+        SupportedUICultures = new List<CultureInfo> { defaultCulture },
+    };
+    CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+    CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+    //app.UseRequestLocalization("en-US");
+    app.UseRequestLocalization("fr-FR");
 
 app.Run();

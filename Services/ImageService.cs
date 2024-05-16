@@ -2,8 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 
 namespace ExpressVoitures.Services
-{
-    //UPD13 image support : dependency
+{    
     [Authorize(Roles = "Admin")]
     public class ImageService
     {
@@ -16,21 +15,30 @@ namespace ExpressVoitures.Services
 
         public async Task<Image> UploadAsync(Image image)
         {
-            var uploadsPath = pathService.GetUploadsPath();
+            try 
+            { 
+                var uploadsPath = pathService.GetUploadsPath();
 
-            var imageFile = image.File;
-            var imageFileName = GetRandomFileName(imageFile.FileName);
-            var imageUploadPath = Path.Combine(uploadsPath, imageFileName);
+                var imageFile = image.File;
+                var imageFileName = GetRandomFileName(imageFile.FileName);
+                var imageUploadPath = Path.Combine(uploadsPath, imageFileName);
 
-            using (var fs = new FileStream(imageUploadPath, FileMode.Create))
-            {
-                await imageFile.CopyToAsync(fs);
+                using (var fs = new FileStream(imageUploadPath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(fs);
+                }
+
+                image.Name = imageFile.FileName;
+                image.Path = pathService.GetUploadsPath(imageFileName, withWebRootPath: false);
+
+                return image;
             }
-
-            image.Name = imageFile.FileName;
-            image.Path = pathService.GetUploadsPath(imageFileName, withWebRootPath: false);
-
-            return image;
+            catch (Exception e)
+            {
+                Console.WriteLine("Image failure (2)...");
+                Console.WriteLine(e.ToString());
+                throw;
+            }
         }
 
         public void DeleteUploadedFile(Image? image)

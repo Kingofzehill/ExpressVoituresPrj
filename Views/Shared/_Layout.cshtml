@@ -7,37 +7,24 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ExpressVoitures.styles.css" asp-append-version="true" />
-    @* UPD012 Boostrap datatable for Search text box and pages navigation into index results*@
+    @* UPD012 Boostrap datatables for Search text box and pages navigation into index results*@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css" />    
 </head>
-@* FIX09 prevent footer to be superposed with main page content : https://radu.link/make-footer-stay-bottom-page-bootstrap/*@
+@* FIX09 prevent footer to be superposed with main page content : https://radu.link/make-footer-stay-bottom-page-bootstrap/.*@
 <body class="d-flex flex-column min-vh-100">
-    <header>
-        @* UPD10 Change Navbar color if admin connected to bg-warning
-
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">*@
+    <header>        
         @if (User.IsInRole("Admin"))
         {
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-warning border-bottom box-shadow mb-3">
                 <div class="container-fluid">
-                @*TD001 update for Vehicule controller (main page)
-                OLD ==> <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Express Voitures</a>
-                *@
                 <a class="navbar-brand" asp-area="" asp-controller="Vehicules" asp-action="Index">Express Voitures - Administration</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Politique de confidentialité</a>
-                        </li>*@
-                        @* UPD05 add admin navigation menu*@
+                    <ul class="navbar-nav flex-grow-1">                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -47,10 +34,7 @@
         else
         {
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary border-bottom box-shadow mb-3">
-                <div class="container-fluid">
-                    @*TD001 update for Vehicule controller (main page)
-                OLD ==> <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Express Voitures</a>
-                *@
+                <div class="container-fluid">                
                     <a class="navbar-brand text-white" asp-area="" asp-controller="Vehicules" asp-action="Index">Express Voitures</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -58,13 +42,6 @@
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
-                            @*<li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Politique de confidentialité</a>
-                        </li>*@
-                            @* UPD05 add admin navigation menu*@
                         </ul>
                         <partial name="_LoginPartial" />
                     </div>
@@ -72,17 +49,14 @@
             </nav>
         }
     </header>
-    @* UPD012 Boostrap datatable for Search text box and pages navigation into index results
-            Add Div class="page-wrapper" with the footer in ==> avoid footer being overwrites by datatables script.
-    *@
+    @* UPD012 Boostrap datatable for Search text box and pages navigation into index results ==> Add Div class="page-wrapper"*@
     <div class="page-wrapper">
         <div class="container">
             <main role="main" class="pb-3">
                 @RenderBody()
             </main>
         </div>
-
-        @*Before FIX09 <footer class="border-top footer text-muted text-center"> *@
+        
         <footer class="mt-auto text-center">
             <div class="container">
                 &copy; @DateTime.Now.Year - Express Voitures - .NET 8@* - <a asp-area="" asp-controller="Home" asp-action="Privacy">Politique de confidentialité</a>*@
@@ -126,6 +100,7 @@
                 url: '//cdn.datatables.net/plug-ins/2.0.5/i18n/fr-FR.json'
             },
         });
+        
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

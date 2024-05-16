@@ -13,7 +13,7 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger">
             </div>
-            @*UPD11 (view) cascading dropdownlist Marque / Modele*@
+            @* (UPD11) cascading dropdownlist Marque / Modele.*@
             <div class="form-group">                
                 <label for="Marque">Marque :</label><br>                                                                
                 @{                    
@@ -28,7 +28,7 @@
                 <select asp-for="ModeleId" class ="form-control" asp-items="ViewBag.ModeleId">
                     <option value="0">Sélectionner...</option>
                 </select>
-                @*UPD11 (view) cascading dropdownlist Marque / Modele*@
+                @* (UPD11) cascading dropdownlist Marque / Modele.*@
                 <span asp-validation-for="ModeleId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -47,7 +47,7 @@
     </div>
 </div>
 
-@*UPD11 (view) cascading dropdownlist Marque / Modele*@
+@* (UPD11) cascading dropdownlist Marque / Modele.*@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
@@ -58,12 +58,10 @@
                 //debugger;
                 $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
                     switch (id) {
-                        case "Marque":
-                            //debugger;
+                        case "Marque":                            
                             PopulateDropDown("#ModeleId", data);                            
                             break;
-                        case "ModeleId":
-                            //debugger;
+                        case "ModeleId":                            
                             PopulateDropDown("#Marque", data);                            
                             break;
                     }
@@ -81,14 +79,6 @@
                     .attr("selected", row.selected)
                 )
             });
-                // {
-                //     $(dropDownId).append("<option value='" + row.value + "'" + " selected='" + row.selected + "'> " + row.text + "</option>");
-                //     // if (index == 0) {
-                //     //     $(dropDownId).append("<option value='" + row.value + "' selected='selected'>" + row.text + "</option>");
-                //     // } else {
-                //     //     $(dropDownId).append("<option value='" + row.value + "'>" + row.text + "</option>");
-                //     // }
-                // });
             }
     </script>
 }

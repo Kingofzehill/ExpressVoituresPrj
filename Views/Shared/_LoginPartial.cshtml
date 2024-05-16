@@ -18,27 +18,18 @@
         &nbsp;&nbsp;&nbsp;<a class="btn btn-outline-light" asp-area="" asp-controller="Reparations" asp-action="Index">Réparations</a>        
     </li>
     <li class="nav-item">
-        <a  class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Admin: @User.Identity?.Name</a>
-            @* <span class="op-5 user-email">@User.FindFirstValue(ClaimTypes.Role)  </span> *@
+        <a  class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Admin: @User.Identity?.Name</a>            
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Vehicules", new { area = "" })">
-                @* <button type="submit" class="nav-link btn btn-link text-light">Déconnexion</button> *@
+        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Vehicules", new { area = "" })">                
                 <button type="submit" class="btn btn-outline-dark">Déconnexion</button>                
         </form>
     </li>
 }
 else
-{
-    @*<li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>*@
-    @* <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Connexion</a>
-    </li> *@
+{    
     <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Index", "Vehicules", new { area = "" })">
-                @* <button type="submit" class="nav-link btn btn-link text-light">Déconnexion</button> *@
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Index", "Vehicules", new { area = "" })">                
                 <button type="submit" class="btn btn-primary">Connexion</button>
         </form>
     </li>

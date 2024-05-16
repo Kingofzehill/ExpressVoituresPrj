@@ -14,8 +14,7 @@ namespace ExpressVoitures.Controllers
 {
     public class VehiculesController : Controller
     {
-        private readonly ExpressVoituresContext _context;
-        // UPD13.4 image support
+        private readonly ExpressVoituresContext _context;        
         private readonly ImageService _imageService;
         private readonly VehiculeService _vehiculeService;
 
@@ -26,7 +25,8 @@ namespace ExpressVoitures.Controllers
             _vehiculeService = vehiculeService;           
         }
 
-        // TD18 Add filter on statut En vente (only for public)
+        // (Public) Add filter on statut "En vente" with decreaseing sorting by AnneeVehicule.
+        // (Admin) Fecreaseing sorting by"DateMisAJour".
         // GET: Vehicules
         public async Task<IActionResult> Index()
         {
@@ -111,7 +111,15 @@ namespace ExpressVoitures.Controllers
                 }
                 _context.Add(vehicule);
                 await _context.SaveChangesAsync();
-
+                ViewData["AnneeMinimumVehicule"] = Vehicule.carYearMinimum;
+                ViewData["MargeMinimum"] = Vehicule.margisMinimum;
+                ViewData["AnneeVehicule"] = vehicule.AnneeVehicule;
+                ViewData["Marge"] = vehicule.Marge;
+                ViewData["DateAchat"] = vehicule.DateAchat.ToString("yyyy-MM-dd");
+                ViewData["DateMisEnVente"] = vehicule.DateMisEnVente?.ToString("yyyy-MM-dd");
+                ViewData["DateVente"] = vehicule.DateVente?.ToString("yyyy-MM-dd");
+                ViewData["Image"] = vehicule.Image;
+                ViewData["Statut"] = vehicule.Statut;
                 bool bDisplayVehiculeActionForSale = false;bool bDisplayVehiculeActionSold = false; bool bDisplayVehiculeAvailabilty = false;
                 ViewData["ActionEnVente"] = false;ViewData["ActionVendu"] = false; ViewData["ActionDisponibilite"] = 0;
                 // Car actions buttons
@@ -174,7 +182,7 @@ namespace ExpressVoitures.Controllers
         
         // GET: Vehicules/Edit/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id, int defaultStatus = 0, int carYearMinimum = Vehicule.carYearMinimum, decimal margisMinimum = Vehicule.margisMinimum)
+        public async Task<IActionResult> Edit(int? id, int carYearMinimum = Vehicule.carYearMinimum, decimal margisMinimum = Vehicule.margisMinimum)
         {
             if (id == null)
             {
@@ -184,20 +192,19 @@ namespace ExpressVoitures.Controllers
             if (vehicule == null)
             {
                 return NotFound();
-            }            
+            }
             ViewData["AnneeMinimumVehicule"] = carYearMinimum;
             ViewData["MargeMinimum"] = margisMinimum;
             ViewData["AnneeVehicule"] = vehicule.AnneeVehicule;
             ViewData["Marge"] = vehicule.Marge;
             ViewData["DateAchat"] = vehicule.DateAchat.ToString("yyyy-MM-dd");
-            //FIX10.1 manage date format for nullable date field
             ViewData["DateMisEnVente"] = vehicule.DateMisEnVente?.ToString("yyyy-MM-dd");
             ViewData["DateVente"] = vehicule.DateVente?.ToString("yyyy-MM-dd");
+            ViewData["Image"] = vehicule.Image;
+            ViewData["Statut"] = vehicule.Statut;
             ViewData["ActionEnVente"] = _vehiculeService.CarToSaleButtonDisplay(vehicule);
             ViewData["ActionVendu"] = _vehiculeService.CarSoldButtonDisplay(vehicule);
             ViewData["ActionDisponibilite"] = _vehiculeService.CarUnavailableButtonDisplay(vehicule);
-            ViewData["Image"] = vehicule.Image?.File;
-            ViewData["Statut"] = vehicule.Statut;     
             // Cascading dropdownlist Marque / Modele.
             if (vehicule.FinitionId != 0)
             {
@@ -218,7 +225,7 @@ namespace ExpressVoitures.Controllers
 
         // POST: Vehicules/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //          For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -229,18 +236,16 @@ namespace ExpressVoitures.Controllers
                 return NotFound();
             }
 
-            // ignore navigation property
+            // ignore navigation property.
             ModelState.Remove(nameof(Vehicule.Finition));
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    vehicule.DateMisAJour = DateTime.Now;
-                    //vehicule.Statut = _context.Vehicule.Single(c => c.Id == id).Statut;
+                    vehicule.DateMisAJour = DateTime.Now;                    
                     try
-                    {
-                        // UPD13.4 create image support
+                    {                        
                         if (vehicule.Image != null)
                         {
                             vehicule.Image = await _imageService.UploadAsync(vehicule.Image);
@@ -251,8 +256,7 @@ namespace ExpressVoitures.Controllers
                         Console.WriteLine("Image failure...");
                         Console.WriteLine(e.ToString());
                         throw;
-                    }
-
+                    }                    
                     _context.Update(vehicule);
                     await _context.SaveChangesAsync();
                 }
@@ -266,11 +270,19 @@ namespace ExpressVoitures.Controllers
                     {
                         throw;
                     }
-                }                
-
+                }
+                ViewData["AnneeMinimumVehicule"] = Vehicule.carYearMinimum;
+                ViewData["MargeMinimum"] = Vehicule.margisMinimum;
+                ViewData["AnneeVehicule"] = vehicule.AnneeVehicule;
+                ViewData["Marge"] = vehicule.Marge;
+                ViewData["DateAchat"] = vehicule.DateAchat.ToString("yyyy-MM-dd");
+                ViewData["DateMisEnVente"] = vehicule.DateMisEnVente?.ToString("yyyy-MM-dd");
+                ViewData["DateVente"] = vehicule.DateVente?.ToString("yyyy-MM-dd");                
+                ViewData["Image"] = vehicule.Image;
+                ViewData["Statut"] = vehicule.Statut;
                 bool bDisplayVehiculeActionForSale = false; bool bDisplayVehiculeActionSold = false; bool bDisplayVehiculeAvailabilty = false;
                 ViewData["ActionEnVente"] = false; ViewData["ActionVendu"] = false; ViewData["ActionDisponibilite"] = 0;
-                // Car actions buttons
+                // Car actions buttons.
                 if (_vehiculeService.CarToSaleButtonDisplay(vehicule) == true)
                 {
                     bDisplayVehiculeActionForSale = true;
@@ -377,48 +389,57 @@ namespace ExpressVoitures.Controllers
         [HttpPost]
         public JsonResult setDropDrownList(string type, int value)
         {
-            switch (type)
+            try
+            { 
+                switch (type)
+                {
+                    case "Marque":
+                        var modelsList = new SelectList(new List<SelectListItem>());
+                        if (value == 0)
+                        {
+                            modelsList = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", 0);
+                        }
+                        else
+                        {
+                            modelsList = new SelectList(_context.Set<Modele>().Where(m => m.MarqueId == value).OrderBy(x => x.LibelleModele), "Id", "LibelleModele", 0);
+                        }
+                        ViewData["Modele"] = modelsList;
+                        return Json(modelsList);
+                    case "Modele":
+                        var finishingList = new SelectList(new List<SelectListItem>());
+                        if (value == 0)
+                        {
+                            finishingList = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition", 0);
+                        }
+                        else
+                        {
+                            finishingList = new SelectList(_context.Set<Finition>().Where(m => m.ModeleId == value).OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition", 0);
+                        }
+                        ViewData["FinitionId"] = finishingList;
+                        return Json(finishingList);
+                    case "FinitionId":
+                        var brandList = new SelectList(new List<SelectListItem>());
+                        if (value == 0)
+                        {
+                            brandList = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", 0);
+                        }
+                        else
+                        {
+                            var modelId = _context.Finition.Single(c => c.Id == value).ModeleId;
+                            var brandId = _context.Modele.Single(c => c.Id == modelId).MarqueId;
+                            brandList = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", brandId);
+                        }
+                        ViewData["Marque"] = brandList;
+                        return Json(brandList);
+                    default:
+                        return Json(new SelectList(null));
+                }
+            }
+            catch (Exception e)
             {
-                case "Marque":
-                    var modelsList = new SelectList(new List<SelectListItem>());
-                    if (value == 0)
-                    {
-                        modelsList = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", 0);
-                    }
-                    else
-                    {
-                        modelsList = new SelectList(_context.Set<Modele>().Where(m => m.MarqueId == value).OrderBy(x => x.LibelleModele), "Id", "LibelleModele", 0);
-                    }
-                    ViewData["Modele"] = modelsList;
-                    return Json(modelsList);
-                case "Modele":
-                    var finishingList = new SelectList(new List<SelectListItem>());
-                    if (value == 0)
-                    {
-                        finishingList = new SelectList(_context.Set<Finition>().OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition", 0);
-                    }
-                    else
-                    {
-                        finishingList = new SelectList(_context.Set<Finition>().Where(m => m.ModeleId == value).OrderBy(x => x.LibelleFinition), "Id", "LibelleFinition", 0);
-                    }
-                    ViewData["FinitionId"] = finishingList;
-                    return Json(finishingList);
-                case "FinitionId":
-                    var brandList = new SelectList(new List<SelectListItem>());
-                    if (value == 0)
-                    {
-                        brandList = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", 0);
-                    }
-                    else
-                    {
-                        var modelId = _context.Finition.Single(c => c.Id == value).ModeleId;
-                        var brandId = _context.Modele.Single(c => c.Id == modelId).MarqueId;
-                        brandList = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", brandId);
-                    }
-                    ViewData["Marque"] = brandList;
-                    return Json(brandList);
-                default:
-                    return Json(new SelectList(null));
+                Console.WriteLine("setDropDrownList(Vechicules) failure...");
+                Console.WriteLine(e.ToString());
+                throw;
             }
         }
 
@@ -502,5 +523,6 @@ namespace ExpressVoitures.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+    
     }
 }

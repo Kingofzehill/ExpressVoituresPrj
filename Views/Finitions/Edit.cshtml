@@ -12,8 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />            
-            @*UPD11 (view) cascading dropdownlist Marque / Modele*@
+            <input type="hidden" asp-for="Id" />                        
             <div class="form-group">
                 <label for="Marque">Marque :</label><br>                
                 @{                    
@@ -56,12 +55,10 @@
                 //debugger;
                 $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
                     switch (id) {
-                        case "Marque":
-                            //debugger;
+                        case "Marque":                            
                             PopulateDropDown("#ModeleId", data);                            
                             break;
-                        case "ModeleId":
-                            //debugger;
+                        case "ModeleId":                            
                             PopulateDropDown("#Marque", data);                            
                             break;
                     }

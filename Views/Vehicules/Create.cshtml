@@ -9,12 +9,12 @@
 <hr />
 <div id="dropDownListdiv" class="row">
     <div class="col-md-4">
-        @* FIX07 Image support add enctype="multipart/form-data" to form tag for file upload *@
+        @* (FIX07) For Image upload support add enctype="multipart/form-data" to form tag.*@
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>            
             <div class="form-group">
                 <label asp-for="Statut" class="control-label"></label> *
-                @*FIX001.1 displays enum values list OLD ==> <select asp-for="Statut" class="form-control"></select>*@
+                @* FIX001.1 displays list of VehiculeStatuts enum values.*@
                 <select asp-for="Statut" class="form-control" asp-items="Html.GetEnumSelectList<VehiculeStatuts>()">                 
                 </select>
                 <span asp-validation-for="Statut" class="text-danger"></span>
@@ -36,7 +36,7 @@
                         <span asp-validation-for="AnneeVehicule" class="text-danger"></span>
                 }                
             </div>
-            @* Marque and Modele dropdownlist with cascade updates*@
+            @* Marque and Modele dropdownlists with cascade updates.*@
             <div class="form-group">
                 <label for="Marque">Marque :</label><br>
                 @{
@@ -73,20 +73,17 @@
                 <span asp-validation-for="Information" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateAchat" class="control-label"></label> *
-                @* <input asp-for="DateAchat" class="form-control" /> *@
+                <label asp-for="DateAchat" class="control-label"></label> *                
                 <input asp-for="DateAchat" class="form-control" value="@ViewData["DateAchat"]" />
                 <span asp-validation-for="DateAchat" class="text-danger"></span>                
             </div>
             <div class="form-group">
-                <label asp-for="DateMisEnVente" class="control-label"></label>
-                @* <input asp-for="DateMisEnVente" class="form-control" /> *@
+                <label asp-for="DateMisEnVente" class="control-label"></label>                
                 <input asp-for="DateMisEnVente" class="form-control" value="@ViewData["DateMisEnVente"]" />
                 <span asp-validation-for="DateMisEnVente" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateVente" class="control-label"></label>
-                @* <input asp-for="DateVente" class="form-control" /> *@
+                <label asp-for="DateVente" class="control-label"></label>                
                 <input asp-for="DateVente" class="form-control" value="@ViewData["DateVente"]" />
                 <span asp-validation-for="DateVente" class="text-danger"></span>
             </div>
@@ -112,10 +109,9 @@
                     if (myMargis == null)                    
                     {
                         myMargis = ViewData["MargeMinimum"];
-                    }
-                        @* <input asp-for="Marge" class="form-control" value="@ViewBag.marge" /> *@
-                        <input asp-for="Marge" class="form-control" value="@myMargis" />
-                        <span asp-validation-for="Marge" class="text-danger"></span>
+                    }                        
+                    <input asp-for="Marge" class="form-control" value="@myMargis" />
+                    <span asp-validation-for="Marge" class="text-danger"></span>
                 }
             </div>            
             <div class="form-group">
@@ -123,7 +119,7 @@
                 <input asp-for="PrixDeVente" class="form-control" />
                 <span asp-validation-for="PrixDeVente" class="text-danger"></span>
             </div>                                  
-            @* UPD13.5 create view image support*@
+            @* Select image file support.*@
             <div class="form-group">
                 <label asp-for="Image.File" class="control-label"></label>
                 @if (ViewData["Image"] != null)
@@ -176,7 +172,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
     <script>
-        @*statut dropdownlist readonly*@
+        @* Statut dropdownlist readonly.*@
         $("#Statut").attr("disabled","disabled");
 
         $(function () {
@@ -187,18 +183,15 @@
                 if (id != "Statut") { 
                     $.post("@Url.Action("setDropDrownList")", { type: id, value: value }, function (data) {
                         switch (id) {
-                            case "Marque":
-                                //debugger;
+                            case "Marque":                                
                                 PopulateDropDown("#Modele", data);
                                 $("#Modele").val(0);
                                 $("#FinitionId").val(0);
                                 break;
-                            case "Modele":
-                                //debugger;
+                            case "Modele":                                
                                 PopulateDropDown("#FinitionId", data);
                                 break;
-                            case "FinitionId":
-                                //debugger;                            
+                            case "FinitionId":                                
                                 PopulateDropDown("#Marque", data);                            
                                 break;
                         }
@@ -217,6 +210,12 @@
                     .attr("selected", row.selected)
                 )
             });
+        }
+
+        // (FIX13) JQuery client side validation rule for managing comma as decimal 
+        // separator (the regex swaps the dot and comma).
+        $.validator.methods.number = function (value, element) {
+            return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:\.\d{3})+)?(?:,\d+)?$/.test(value);
         }
     </script>
 }

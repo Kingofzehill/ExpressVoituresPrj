@@ -11,7 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ExpressVoitures.Controllers
 {
-    // UPD09 : check user connected with admin role for accessing controller / controller methods reserved to administrator
+    // check user connected with admin role for accessing controller
+    // / controller methods reserved to administrator.
     [Authorize(Roles = "Admin")]
     public class MarquesController : Controller
     {
@@ -25,7 +26,7 @@ namespace ExpressVoitures.Controllers
         // GET: Marques
         public async Task<IActionResult> Index()
         {
-            // UPD02 : marque alphabetical order
+            // Marque alphabetical order.
             return View(await _context.Marque.OrderBy(x => x.LibelleMarque).ToListAsync());
         }
 

@@ -2,8 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace ExpressVoitures.Models
-{
-    //UPD13 image support (class image)
+{    
     public class Image
     {
         public int Id { get; set; }
@@ -18,6 +17,6 @@ namespace ExpressVoitures.Models
         public IFormFile? File { get; set; }
 
         public int VehiculeId { get; set; }
-        public Vehicule? Vehicule { get; set; } //navigation property for 1/1 relationship with Vehicule (PARENT)
+        public Vehicule? Vehicule { get; set; } //navigation property for 1/1 relationship with Vehicule (PARENT).
     }
 }

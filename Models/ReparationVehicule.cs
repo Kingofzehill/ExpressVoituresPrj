@@ -19,9 +19,7 @@ namespace ExpressVoitures.Models
 
         public int ReparationsId { get; set; }
 
-        [Display(Name = "Coût réparation")]
-        // UPD14 change attribut Precision(7, 2) for [Column(TypeName = "decimal(7, 2)")]
-        // UPD07 update property ReparationVehicule.CoutReparation ==> from Precision(4, 2) to Precision(7, 2)
+        [Display(Name = "Coût réparation")]                
         [Column(TypeName = "decimal(7, 2)")]
         [DataType(DataType.Currency)]
         [Range(1, 99999, ErrorMessage = "Saisir un {0} au format XXXXX.XX")]

@@ -50,7 +50,7 @@ namespace ExpressVoitures.Controllers
         // GET: Modeles/Create
         public IActionResult Create()
         {
-            // UPD04 : alphabetical order for vizews dropdownlist
+            // (UPD04) Alphabetical order of Marque dropdownlist.
             ViewData["MarqueId"] = new SelectList(_context.Marque.OrderBy(x=>x.LibelleMarque), "Id", "LibelleMarque");
             return View();
         }
@@ -62,7 +62,7 @@ namespace ExpressVoitures.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,LibelleModele,MarqueId")] Modele modele)
         {
-            // FIX02 ModelState incorrectly reference navigation property for validation
+            // (FIX02) ModelState incorrectly reference navigation property for validation
             //      https://stackoverflow.com/questions/55115319/modelstate-errors-for-all-navigation-properties
             // ignore navigation property
             ModelState.Remove(nameof(Modele.Marque));
@@ -106,7 +106,7 @@ namespace ExpressVoitures.Controllers
                 return NotFound();
             }
 
-            // ignore navigation property
+            // Ignore navigation property.
             ModelState.Remove(nameof(Modele.Marque));
 
             if (ModelState.IsValid)

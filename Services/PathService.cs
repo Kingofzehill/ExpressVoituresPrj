@@ -1,8 +1,7 @@
 ﻿using ExpressVoitures.Options;
 
 namespace ExpressVoitures.Services
-{
-    //UPD13 image support : dependency
+{    
     public class PathService
     {
         private readonly IConfiguration configuration;

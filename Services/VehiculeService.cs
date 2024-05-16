@@ -8,11 +8,9 @@ namespace ExpressVoitures.Services
 {
     [Authorize(Roles = "Admin")]
     public class VehiculeService
-    {
-
+    {        
         public VehiculeService()
         {
-
         }
 
         /// <summary>
@@ -24,7 +22,7 @@ namespace ExpressVoitures.Services
         {
             bool bToSaleButtonDisplay = false;                                  
 
-            if ((vehicule.DateMisEnVente != null) && (vehicule.PrixDeVente > 0) && (vehicule.MisEnVente == false))
+            if ((vehicule.DateMisEnVente != null) && (vehicule.PrixDeVente > 0) && (vehicule.MisEnVente == false) && (vehicule.Statut == VehiculeStatuts.Achat))
             {
                 bToSaleButtonDisplay = true;
             }
@@ -41,7 +39,7 @@ namespace ExpressVoitures.Services
         {
             bool bSoldButtonDisplay = false;                           
 
-            if ((vehicule.DateVente != null) && (vehicule.Vendu == false))
+            if ((vehicule.DateVente != null) && (vehicule.Vendu == false) && (vehicule.Statut == VehiculeStatuts.EnVente))
             {
                 bSoldButtonDisplay = true;
             }

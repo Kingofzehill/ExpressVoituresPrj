@@ -53,51 +53,11 @@ namespace ExpressVoitures.Controllers
         // GET: Finitions/Create
         public IActionResult Create()
         {            
-            // UPD11.1 (controller create) cascading dropdownlist Marque / Modele                            
+            // (UPD11.1) cascading dropdownlist Marque / Modele.
             ViewData["Marque"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", 0);
             ViewData["ModeleId"] = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", 0);
             return View();
-        }
-
-        /// <summary>
-        /// setDropDrownList Method
-        /// Cascading DropDrownLists Marques / Modeles 
-        /// </summary>
-        /// <remarks></remarks>
-        [HttpPost]
-        public JsonResult setDropDrownList(string type, int value)
-        {
-            switch (type)
-            {
-                case "Marque":
-                    var modelsList = new SelectList(new List<SelectListItem>());                    
-                    if (value == 0)
-                    {
-                        modelsList = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", 0);
-                    }
-                    else
-                    {
-                        modelsList = new SelectList(_context.Set<Modele>().Where(m => m.MarqueId == value).OrderBy(x => x.LibelleModele), "Id", "LibelleModele", 0);
-                    }
-                    ViewData["ModeleId"] = modelsList;
-                    return Json(modelsList);
-                case "ModeleId":
-                    var brandList = new SelectList(new List<SelectListItem>());                    
-                    if (value == 0)
-                    {
-                        brandList = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", 0);
-                    }
-                    else
-                    {
-                        var brandId = _context.Modele.Single(c => c.Id == value).MarqueId;
-                        brandList = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", brandId);
-                    }                                        
-                    ViewData["Marque"] = brandList;
-                    return Json(brandList);
-                default:
-                    return Json(new SelectList(null));
-            }            
-        }
+        }        
 
         // POST: Finitions/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -106,9 +66,9 @@ namespace ExpressVoitures.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,LibelleFinition,ModeleId,Marque")] Finition finition)
         {
-            // FIX6 finition : ignore navigation property on create validation
+            // (FIX6) Finition : ignore navigation property.
             ModelState.Remove(nameof(Finition.Modele));
-            // UPD11.3 Fintion update model validation for managing "Selectionner" default list options
+            // (UPD11.3) Update model validation for "Selectionner" default list option.
             if (finition.ModeleId == 0) // ModeleId == 0 for "Sélectionner..." option
             {
                 ModelState.AddModelError("ModeleId", "Veuillez sélectionner le Modèle de la Finition.");
@@ -130,8 +90,7 @@ namespace ExpressVoitures.Controllers
             {                
                 ViewData["Marque"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", 0);
 
-            }
-            //ViewData["Marque"] = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque");
+            }            
             ViewData["ModeleId"] = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", finition.ModeleId);
             return View(finition);
         }
@@ -149,7 +108,7 @@ namespace ExpressVoitures.Controllers
             {
                 return NotFound();
             }
-            // UPD11 : FinitionView, add MarquesList which filter ModeleList            
+            // UPD11 : Finition /  Marques dropdownlists. 
             if (finition.ModeleId != 0)
             {                
                 var brandId = _context.Modele.Single(c => c.Id == finition.ModeleId).MarqueId;                
@@ -175,9 +134,9 @@ namespace ExpressVoitures.Controllers
                 return NotFound();
             }
 
-            // FIX6 finition : ignore navigation property on create validation
+            // (FIX6) Finition : ignore navigation property.
             ModelState.Remove(nameof(Finition.Modele));
-            // UPD11.3 Fintion update model validation for managing "Selectionner" default list options
+            // (UPD11.3) Finition update model validation for "Selectionner" default list option.
             if (finition.ModeleId == 0) // ModeleId == 0 for "Sélectionner..." option
             {
                 ModelState.AddModelError("ModeleId", "Veuillez sélectionner le Modèle de la Finition.");
@@ -204,7 +163,7 @@ namespace ExpressVoitures.Controllers
                 return RedirectToAction(nameof(Index));
             }
             
-            // UPD11 : FinitionView, add MarquesList which filter ModeleList            
+            // (UPD11) FinitionView, add MarquesList which filter ModeleList            
             if (finition.ModeleId != 0)
             {                
                 var brandId = _context.Modele.Single(c => c.Id == finition.ModeleId).MarqueId;
@@ -255,6 +214,55 @@ namespace ExpressVoitures.Controllers
         private bool FinitionExists(int id)
         {
             return _context.Finition.Any(e => e.Id == id);
+        }
+
+        /// <summary>
+        /// setDropDrownList Method
+        /// Cascading DropDrownLists Marques / Modeles. 
+        /// </summary>
+        /// <remarks></remarks>
+        [HttpPost]
+        public JsonResult setDropDrownList(string type, int value)
+        {
+            try
+            {
+                switch (type)
+                {
+                    case "Marque":
+                        var modelsList = new SelectList(new List<SelectListItem>());
+                        if (value == 0)
+                        {
+                            modelsList = new SelectList(_context.Set<Modele>().OrderBy(x => x.LibelleModele), "Id", "LibelleModele", 0);
+                        }
+                        else
+                        {
+                            modelsList = new SelectList(_context.Set<Modele>().Where(m => m.MarqueId == value).OrderBy(x => x.LibelleModele), "Id", "LibelleModele", 0);
+                        }
+                        ViewData["ModeleId"] = modelsList;
+                        return Json(modelsList);
+                    case "ModeleId":
+                        var brandList = new SelectList(new List<SelectListItem>());
+                        if (value == 0)
+                        {
+                            brandList = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", 0);
+                        }
+                        else
+                        {
+                            var brandId = _context.Modele.Single(c => c.Id == value).MarqueId;
+                            brandList = new SelectList(_context.Set<Marque>().OrderBy(x => x.LibelleMarque), "Id", "LibelleMarque", brandId);
+                        }
+                        ViewData["Marque"] = brandList;
+                        return Json(brandList);
+                    default:
+                        return Json(new SelectList(null));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("setDropDrownList(Finitions) failure...");
+                Console.WriteLine(e.ToString());
+                throw;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@* @System.Globalization.CultureInfo.CurrentUICulture *@
+﻿@*Display current culture info ==> @System.Globalization.CultureInfo.CurrentUICulture *@
 @model IEnumerable<ExpressVoitures.Models.Vehicule>
 @{
     ViewData["Title"] = "Accueil";
@@ -12,8 +12,7 @@
     }
 </style>
 
-<p>
-    @*UPD09.1 : check user connected with admin role for actions or informations in Views reserved for admin*@
+<p>    
     @if (User.IsInRole("Admin"))
     {        
         <a asp-action="Create" type="button" class="btn btn-outline-primary btn-sm">Créer une nouvelle Voiture</a>
@@ -24,8 +23,7 @@
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.AnneeVehicule)
-            </th>
-            @* TD08 Vehicule index : add Marque et Modele*@
+            </th>            
              <th>
                 Marque
             </th>
@@ -43,8 +41,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DateMisEnVente)
-            </th>
-            @* TD09 Vehicule index : Statut & Vin for admin only*@
+            </th>            
             @if (User.IsInRole("Admin"))
             {
                 <th>
@@ -100,14 +97,13 @@
                 </td>
             }
             <td>
-                @* UPD13.6 image support in index Vehicule*@
+                @* Vehicule image display.*@
                 @if (item.Image != null)
                 {
                     <img src="@Url.Content(item.Image.Path)" width="144" height="96">
                 }               
             </td>
-            <td>
-                @* TD10 Vehicule index, admin only : Editer & Supprimer actions *@
+            <td>                
                 @if (User.IsInRole("Admin")) 
                 {
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">Consulter</a>
