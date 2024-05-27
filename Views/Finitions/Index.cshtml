@@ -4,7 +4,7 @@
     ViewData["Title"] = "Liste";
 }
 
-<h1>Liste des Finitions</h1>
+<h3>Liste des Finitions</h3>
 
 <p>    
     <a asp-action="Create" class="btn btn-outline-primary btn-sm">Créer nouvelle Finition</a>
@@ -36,7 +36,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.LibelleFinition)
             </td>            
-            <td>                            
+            <td>                             
                 <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">Consulter</a>
                 <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
                 <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">Supprimer</a>

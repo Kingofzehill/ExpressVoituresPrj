@@ -4,27 +4,30 @@
     ViewData["Title"] = "Consulter";
 }
 
-<h1>Consulter Modèle</h1>
+<h3>Consulter Modèle</h3>
 
-<div>
-    @* <h4>Modèle</h4> *@
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Marque)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Marque.LibelleMarque)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LibelleModele)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LibelleModele)
-        </dd>
-    </dl>
+<div class="row">
+    <div class="col-md-4">
+        @* <h4>Modèle</h4> *@
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Marque)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Marque.LibelleMarque)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.LibelleModele)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.LibelleModele)
+            </dd>
+        </dl>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
+            <a asp-action="Index" class="btn btn-outline-dark btn-sm">Liste des Modèles</a>
+        </div>
+    </div>
 </div>
-<div class="d-grid gap-2 col-6 mx-auto">
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
-    <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Modèles</a>
-</div>
+    

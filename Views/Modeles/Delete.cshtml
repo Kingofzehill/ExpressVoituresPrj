@@ -4,30 +4,34 @@
     ViewData["Title"] = "Supprimer";
 }
 
-<h1>Supprimer Modèle</h1>
+<h3>Supprimer Modèle</h3>
 
-<h3>Voulez-vous supprimer ce Modèle ?</h3>
-<div>
-    @* <h4> Modèle </h4> *@
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Marque)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Marque.LibelleMarque)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LibelleModele)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LibelleModele)
-        </dd>
-    </dl>
+<h4>Voulez-vous supprimer ce Modèle ?</h4>
+<div class="row">
+    <div class="col-md-4">
+        @* <h4> Modèle </h4> *@
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Marque)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Marque.LibelleMarque)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.LibelleModele)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.LibelleModele)
+            </dd>
+        </dl>
     
-    <form asp-action="Delete" class="d-grid gap-2 col-6 mx-auto">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Supprimer" class="btn btn-danger" /> 
-        <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Modèles</a>
-    </form>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <input type="submit" value="Supprimer" class="btn btn-danger" /> 
+                <a asp-action="Index" class="btn btn-outline-dark btn-sm">Liste des Modèles</a>
+            </div>
+        </form>
+    </div>
 </div>

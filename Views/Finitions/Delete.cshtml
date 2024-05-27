@@ -4,36 +4,40 @@
     ViewData["Title"] = "Supprimer";
 }
 
-<h1>Supprimer Finition</h1>
+<h3>Supprimer Finition</h3>
 
-<h3>Voulez-vous supprimer cette Finition ?</h3>
-<div>
-    @* <h4>Finition</h4> *@
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Modele.Marque)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Modele.Marque.LibelleMarque)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modele)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modele.LibelleModele)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LibelleFinition)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LibelleFinition)
-        </dd>
-    </dl>
+<h4>Voulez-vous supprimer cette Finition ?</h4>
+<div class="row">
+    <div class="col-md-4">
+        @* <h4>Finition</h4> *@
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Modele.Marque)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Modele.Marque.LibelleMarque)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Modele)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Modele.LibelleModele)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LibelleFinition)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LibelleFinition)
+            </dd>
+        </dl>
     
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Supprimer" class="btn btn-danger" /> 
-        <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Finitions</a>
-    </form>
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <input type="submit" value="Supprimer" class="btn btn-danger" /> 
+                <a asp-action="Index" class="btn btn-outline-dark btn-sm">Liste des Finitions</a>
+            </div>
+        </form>
+    </div>
 </div>

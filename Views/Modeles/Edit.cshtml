@@ -4,7 +4,7 @@
     ViewData["Title"] = "Editer";
 }
 
-<h1>Editer Modèle</h1>
+<h3>Editer Modèle</h3>
 
 <h4>@* Modèle *@</h4>
 <hr />
@@ -23,9 +23,12 @@
                 <input asp-for="LibelleModele" class="form-control" />
                 <span asp-validation-for="LibelleModele" class="text-danger"></span>
             </div>
+            <div>
+                &nbsp;
+            </div>
             <div class="form-group d-grid gap-2 col-6 mx-auto">
-                <input type="submit" value="Sauvegarder Modèle" class="btn btn-success btn-sm" />
-                <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Modèles</a>
+                <input type="submit" value="Sauvegarder" class="btn btn-success btn-sm" />
+                <a asp-action="Index" class="btn btn-outline-dark btn-sm">Liste des Modèles</a>
             </div>
         </form>
     </div>

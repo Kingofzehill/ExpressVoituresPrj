@@ -27,13 +27,13 @@ namespace ExpressVoitures.Models
         public int Id { get; set; }
 
         [Display(Name = "VIN")]        
-        [StringLength(17, ErrorMessage = "{0} doit être de {1} caractères")]
+        [StringLength(17, ErrorMessage = "{0} doit être de {1} caractères.")]
         public string Vin { get; set; } = "";
 
-        [Required(ErrorMessage = "Sélectionner {0}")]
+        [Required(ErrorMessage = "Sélectionner {0}.")]
         public VehiculeStatuts Statut { get; set; }
 
-        [StringLength(200, ErrorMessage = "{0} est limité à {1} caractères")]        
+        [StringLength(200, ErrorMessage = "{0} est limité à {1} caractères.")]        
         public string? Information { get; set; }
         
         [Required(ErrorMessage = "Saisir {0}")]
@@ -46,28 +46,29 @@ namespace ExpressVoitures.Models
         [Display(Name = "Prix d'achat")]        
         [Column(TypeName = "decimal(7, 2)")] // FIX03 : update precision from (2, 2) to (7, 2) as Precision(p, s) : p means both left and right of the decimal
         [DataType(DataType.Currency)]
-        [RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un {0} au format XXXXX,XX")]
+        [RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un {0} au format XXXXX,XX.")]
         public decimal PrixAchat { get; set; }       
 
         [Required(ErrorMessage = "Saisir {0}")]
-        [Display(Name = "Année")]        
-        [Range(1990, 2024, ErrorMessage = "L'{0} doit être entre {1} et {2}")]        
+        [Display(Name = "Année")]
+        //[Range(1990, 2024, ErrorMessage = "L'{0} doit être entre {1} et {2}")]        
+        [Range(1990, int.MaxValue, ErrorMessage = "L'{0} doit être supérieure ou égale à {1}.")]
         public int AnneeVehicule { get; set; }
 
         [Display(Name = "Liste des réparations")]
-        [StringLength(400, ErrorMessage = "{0} est limité à {1} caractères")]
+        [StringLength(400, ErrorMessage = "{0} est limité à {1} caractères.")]
         public string? listeReparations { get; set; }
 
         [Display(Name = "Coût Réparations")]
         [Column(TypeName = "decimal(7, 2)")]
         [DataType(DataType.Currency)]
-        [RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un {0} au format XXXXX,XX")]
+        [RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un {0} au format XXXXX,XX.")]
         public decimal? CoutReparations { get; set; }
 
         [Display(Name = "Prix de vente")]
         [Column(TypeName = "decimal(7, 2)")]
         [DataType(DataType.Currency)]
-        [RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un {0} au format XXXXX,XX")]
+        [RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir un {0} au format XXXXX,XX.")]
         public decimal? PrixDeVente { get; set; }
 
         [Display(Name = "En vente")]
@@ -87,10 +88,10 @@ namespace ExpressVoitures.Models
         
         [Column(TypeName = "decimal(7, 2)")]
         [DataType(DataType.Currency)]
-        [RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir une {0} au format XXXXX,XX")]
+        [RegularExpression(@"^[0-9]+((\,)[0-9]+)*$", ErrorMessage = "Saisir une {0} au format XXXXX,XX.")]
         public decimal Marge { get; set; }
 
-        [Required(ErrorMessage = "Sélectionner {0}")]
+        [Required(ErrorMessage = "Sélectionner {0}.")]
         [Display(Name = "Finition")]
         public int FinitionId { get; set; } // Required foreign key property
         public virtual Finition Finition { get; set; } = null!; // Required reference navigation to principal                                                                        

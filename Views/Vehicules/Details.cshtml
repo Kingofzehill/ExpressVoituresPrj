@@ -4,117 +4,119 @@
     ViewData["Title"] = "Consulter";
 }
 
-<h1>Consulter Voiture</h1>
+<h3>Consulter Voiture</h3>
 
-<div>
-    @* <h4>Voiture</h4> *@
-    <hr />
-    <dl class="row">        
-        @if (User.IsInRole("Admin"))
-        {
+<div class="row">
+    <div class="col-md-8">
+        @* <h4>Voiture</h4> *@
+        <hr />
+        <dl class="row">        
+            @if (User.IsInRole("Admin"))
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Statut)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Statut)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Vin)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Vin)
+                </dd>
+            }
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Statut)
+                @Html.DisplayNameFor(model => model.AnneeVehicule)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Statut)
+                @Html.DisplayFor(model => model.AnneeVehicule)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Vin)
+                @Html.DisplayNameFor(model => model.Finition.Modele.Marque)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Vin)
+                @Html.DisplayFor(model => model.Finition.Modele.Marque.LibelleMarque)
             </dd>
-        }
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AnneeVehicule)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AnneeVehicule)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Finition.Modele.Marque)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Finition.Modele.Marque.LibelleMarque)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Finition.Modele)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Finition.Modele.LibelleModele)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Finition)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Finition.LibelleFinition)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Information)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Information)
-        </dd>        
-        @if (User.IsInRole("Admin"))
-        {
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.DateAchat)
-            </dt>        
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.DateAchat)
-            </dd>
-        }        
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DateMisEnVente)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DateMisEnVente)
-        </dd>
-        @if (User.IsInRole("Admin"))
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.DateVente)
+                @Html.DisplayNameFor(model => model.Finition.Modele)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.DateVente)
+                @Html.DisplayFor(model => model.Finition.Modele.LibelleModele)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PrixAchat)
+                @Html.DisplayNameFor(model => model.Finition)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PrixAchat)
+                @Html.DisplayFor(model => model.Finition.LibelleFinition)
             </dd>
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.listeReparations)
+                @Html.DisplayNameFor(model => model.Information)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.listeReparations)
-            </dd>
+                @Html.DisplayFor(model => model.Information)
+            </dd>        
+            @if (User.IsInRole("Admin"))
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DateAchat)
+                </dt>        
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DateAchat)
+                </dd>
+            }        
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CoutReparations)
+                @Html.DisplayNameFor(model => model.DateMisEnVente)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CoutReparations)
+                @Html.DisplayFor(model => model.DateMisEnVente)
             </dd>
+            @if (User.IsInRole("Admin"))
+            {
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.DateVente)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.DateVente)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PrixAchat)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PrixAchat)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.listeReparations)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.listeReparations)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CoutReparations)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CoutReparations)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Marge)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Marge)
+                </dd>                       
+            }
             <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Marge)
+                @Html.DisplayNameFor(model => model.PrixDeVente)
             </dt>
             <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Marge)
-            </dd>                       
-        }
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PrixDeVente)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PrixDeVente)
-        </dd>
-    </dl>
-</div>
-<div class="d-grid gap-2 col-6 mx-auto">
-    @if (User.IsInRole("Admin"))
-    {
-        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
-    }
-    <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Voitures</a>
+                @Html.DisplayFor(model => model.PrixDeVente)
+            </dd>
+        </dl>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
+            }
+            <a asp-action="Index" class="btn btn-outline-dark btn-sm">Liste des Voitures</a>
+        </div>
+    </div>
 </div>

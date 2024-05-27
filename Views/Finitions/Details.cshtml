@@ -4,33 +4,35 @@
     ViewData["Title"] = "Consulter";
 }
 
-<h1>Consulter Finition</h1>
+<h3>Consulter Finition</h3>
 
-<div>
-    @* <h4>Consulter</h4> *@
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Modele.Marque)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Modele.Marque.LibelleMarque)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modele)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modele.LibelleModele)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LibelleFinition)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LibelleFinition)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
-    <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Finitions</a>
+<div class="row">
+    <div class="col-md-4">
+        @* <h4>Consulter</h4> *@
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Modele.Marque)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Modele.Marque.LibelleMarque)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Modele)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Modele.LibelleModele)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.LibelleFinition)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.LibelleFinition)
+            </dd>
+        </dl>
+        <div class="d-grid gap-2 col-6 mx-auto">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-secondary btn-sm">Editer</a>
+            <a asp-action="Index" class="btn btn-outline-dark btn-sm">Liste des Finitions</a>
+        </div>
+    </div>
 </div>

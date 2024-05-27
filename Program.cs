@@ -104,15 +104,18 @@ using Microsoft.AspNetCore.Mvc;
     defaultCulture.NumberFormat.CurrencyDecimalSeparator = ",";
     //defaultCulture.NumberFormat.NumberDecimalSeparator = ".";
     defaultCulture.NumberFormat.NumberDecimalSeparator = ",";
+    var dateformat = new DateTimeFormatInfo();
+    dateformat.ShortDatePattern = "dd/MM/yyyy"; //FullDateTimePattern = "{0:dd/MM/yyyy}";
+    defaultCulture.DateTimeFormat = dateformat;
     var localizationOptions = new RequestLocalizationOptions
-    {
-        DefaultRequestCulture = new RequestCulture(defaultCulture),
-        SupportedCultures = new List<CultureInfo> { defaultCulture },
-        SupportedUICultures = new List<CultureInfo> { defaultCulture },
-    };
-    CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
-    CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
-    //app.UseRequestLocalization("en-US");
-    app.UseRequestLocalization("fr-FR");
+        {
+            DefaultRequestCulture = new RequestCulture(defaultCulture),
+            SupportedCultures = new List<CultureInfo> { defaultCulture },
+            SupportedUICultures = new List<CultureInfo> { defaultCulture },
+        };
+        CultureInfo.DefaultThreadCurrentCulture = defaultCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = defaultCulture;
+        //app.UseRequestLocalization("en-US");
+        app.UseRequestLocalization("fr-FR");
 
-app.Run();
+    app.Run();

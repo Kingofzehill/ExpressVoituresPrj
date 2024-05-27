@@ -4,7 +4,7 @@
     ViewData["Title"] = "Editer";
 }
 
-<h1>Editer Voiture</h1>
+<h3>Editer Voiture</h3>
 
 @* <h4>Voiture</h4> *@
 <hr />
@@ -24,7 +24,7 @@
                 <span asp-validation-for="Vin" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AnneeVehicule" class="control-label"></label> *
+                <label asp-for="AnneeVehicule" class="control-label"></label>
                 @{
                     var myYear = ViewData["AnneeVehicule"];
                     if (myYear == null)
@@ -37,6 +37,7 @@
             </div>
             @* Marque and Modele dropdownlists with cascade updates.*@
             <div class="form-group">
+                <label for="Modele">Marque</label><br>
                 @{
                     if (ViewData["Marque"] != null)
                     {
@@ -48,7 +49,7 @@
                 }
             </div>
             <div class="form-group">
-                <label for="Modele">Modele :</label><br>
+                <label for="Modele">Modele</label><br>
                 @{
                     if (ViewData["Modele"] != null)
                     {
@@ -60,7 +61,7 @@
                 }
             </div>
             <div class="form-group">
-                <label asp-for="FinitionId" class="control-label"></label> *
+                <label asp-for="FinitionId" class="control-label"></label>
                 <select asp-for="FinitionId" class="form-control" asp-items="ViewBag.FinitionId">
                     <option value="0">Sélectionner...</option>
                 </select>
@@ -71,7 +72,7 @@
                 <span asp-validation-for="Information" class="text-danger"></span>
             </div>            
             <div class="form-group">
-                <label asp-for="DateAchat" class="control-label"></label> *
+                <label asp-for="DateAchat" class="control-label"></label>
                 <input asp-for="DateAchat" class="form-control" value="@ViewData["DateAchat"]" />                
                 <span asp-validation-for="DateAchat" class="text-danger"></span>
             </div>
@@ -135,7 +136,7 @@
                     var myActionSold = (bool)ViewData["ActionVendu"];
                     var myActionAvailabilty = (int)ViewData["ActionDisponibilite"];
 
-                    <input type="submit" value="Sauvegarder Voiture" class="btn btn-success btn-sm btn-block" />
+                    <input type="submit" value="Sauvegarder" class="btn btn-success btn-sm btn-block" />
 
                     if (myActionToSale == true)
                     {
@@ -161,7 +162,7 @@
 
                     }
                 }
-                <a asp-action="Index" class="btn btn-outline-dark btn-sm">Retour à la liste des Voitures</a>
+                <a asp-action="Index" class="btn btn-outline-dark btn-sm">Liste des Voitures</a>
             </div>
         </form>
     </div>

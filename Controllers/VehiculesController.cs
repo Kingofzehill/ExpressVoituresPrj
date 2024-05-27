@@ -90,7 +90,34 @@ namespace ExpressVoitures.Controllers
         public async Task<IActionResult> Create([Bind("Id,Vin,Statut,Information,DateAchat,PrixAchat,AnneeVehicule,PrixDeVente,DateMisEnVente,DateVente,FinitionId,Marge,Image,MisEnVente,Vendu,ActionEnVente,AnneeMinimumVehicule,MargeMinimum,ActionVendu,Marque,Modele,CoutReparations,Indisponible,listeReparations,ActionDisponibilite")] Vehicule vehicule)
         {
             // ignore navigation property
-            ModelState.Remove(nameof(Vehicule.Finition));            
+            ModelState.Remove(nameof(Vehicule.Finition));
+
+            // Check year <= current year.
+            var actualYear = DateTime.Now.Year;
+            if (vehicule.AnneeVehicule > actualYear)
+            {
+                ModelState.AddModelError(nameof(vehicule.AnneeVehicule),
+                             "L'Année doit être inférieure ou égale à l'année en cours : " + actualYear + ".");
+            }
+            // Check sale price = buying price + repairs cost + margis.
+            if (vehicule.PrixDeVente > 0)
+            {
+                if (!(vehicule.Marge > 0))
+                {
+                    ModelState.AddModelError(nameof(vehicule.Marge),
+                             "Veuillez saisir une marge. Par défaut, elle devrait être de " + Vehicule.margisMinimum + ".");
+                }
+                var calculatedSalePrice = vehicule.PrixAchat + vehicule.CoutReparations + vehicule.Marge;
+                if (vehicule.PrixDeVente != calculatedSalePrice)
+                {
+                    ModelState.AddModelError(nameof(vehicule.PrixDeVente),
+                             "Le Prix de Vente " + vehicule.PrixDeVente +
+                             " n'est pas égal à la somme (" + calculatedSalePrice +
+                             ") des : Prix d'Achat (" + vehicule.PrixAchat +
+                             ") + Coûts de Réparation (" + vehicule.CoutReparations +
+                             ") +  Marge (" + vehicule.Marge + ").");
+                }
+            }
 
             if (ModelState.IsValid)
             {                                
@@ -162,6 +189,16 @@ namespace ExpressVoitures.Controllers
                     return RedirectToAction(nameof(Index));
                 }                
             }
+            ViewData["AnneeMinimumVehicule"] = Vehicule.carYearMinimum;
+            ViewData["MargeMinimum"] = Vehicule.margisMinimum;
+            ViewData["AnneeVehicule"] = vehicule.AnneeVehicule;
+            ViewData["Marge"] = vehicule.Marge;
+            ViewData["DateAchat"] = vehicule.DateAchat.ToString("yyyy-MM-dd");
+            ViewData["DateMisEnVente"] = vehicule.DateMisEnVente?.ToString("yyyy-MM-dd");
+            ViewData["DateVente"] = vehicule.DateVente?.ToString("yyyy-MM-dd");
+            ViewData["Image"] = vehicule.Image;
+            ViewData["Statut"] = vehicule.Statut;            
+            ViewData["ActionEnVente"] = false; ViewData["ActionVendu"] = false; ViewData["ActionDisponibilite"] = 0;
             // Cascading dropdownlist Marque / Modele.
             if (vehicule.FinitionId != 0)
             {
@@ -239,6 +276,33 @@ namespace ExpressVoitures.Controllers
             // ignore navigation property.
             ModelState.Remove(nameof(Vehicule.Finition));
 
+            // Check year <= current year.
+            var actualYear = DateTime.Now.Year;
+            if (vehicule.AnneeVehicule > actualYear)
+            {
+                ModelState.AddModelError(nameof(vehicule.AnneeVehicule),
+                             "L'Année doit être inférieure ou égale à l'année en cours : " + actualYear + ".");
+            }
+            // Check sale price = buying price + repairs cost + margis.
+            if (vehicule.PrixDeVente > 0)
+            {
+                if (!(vehicule.Marge > 0))
+                {
+                    ModelState.AddModelError(nameof(vehicule.Marge),
+                             "Veuillez saisir une marge. Par défaut, elle devrait être de " + Vehicule.margisMinimum + ".");
+                }
+                var calculatedSalePrice = vehicule.PrixAchat + vehicule.CoutReparations + vehicule.Marge;
+                if (vehicule.PrixDeVente != calculatedSalePrice)
+                {
+                    ModelState.AddModelError(nameof(vehicule.PrixDeVente),
+                             "Le Prix de Vente " + vehicule.PrixDeVente +
+                             " n'est pas égal à la somme (" + calculatedSalePrice +
+                             ") des : Prix d'Achat (" + vehicule.PrixAchat +
+                             ") + Coûts de Réparation (" + vehicule.CoutReparations +
+                             ") +  Marge (" + vehicule.Marge + ").");
+                }
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -248,6 +312,7 @@ namespace ExpressVoitures.Controllers
                     {                        
                         if (vehicule.Image != null)
                         {
+                            //_context.Images.Remove
                             vehicule.Image = await _imageService.UploadAsync(vehicule.Image);
                         }
                     }
@@ -322,6 +387,16 @@ namespace ExpressVoitures.Controllers
                     return RedirectToAction(nameof(Index));
                 }
             }
+            ViewData["AnneeMinimumVehicule"] = Vehicule.carYearMinimum;
+            ViewData["MargeMinimum"] = Vehicule.margisMinimum;
+            ViewData["AnneeVehicule"] = vehicule.AnneeVehicule;
+            ViewData["Marge"] = vehicule.Marge;
+            ViewData["DateAchat"] = vehicule.DateAchat.ToString("yyyy-MM-dd");
+            ViewData["DateMisEnVente"] = vehicule.DateMisEnVente?.ToString("yyyy-MM-dd");
+            ViewData["DateVente"] = vehicule.DateVente?.ToString("yyyy-MM-dd");
+            ViewData["Image"] = vehicule.Image;
+            ViewData["Statut"] = vehicule.Statut;            
+            ViewData["ActionEnVente"] = false; ViewData["ActionVendu"] = false; ViewData["ActionDisponibilite"] = 0;
             // Cascading dropdonwlists Marque / Modele.
             if (vehicule.FinitionId != 0)
             {

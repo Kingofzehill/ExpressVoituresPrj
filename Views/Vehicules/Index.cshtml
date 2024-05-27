@@ -64,15 +64,15 @@
                 @Html.DisplayFor(modelItem => item.AnneeVehicule)
             </td>
             <td>
-                @if (item.Finition.Modele != null)
-                {
-                    @Html.DisplayFor(modelItem => item.Finition.Modele.LibelleModele)
-                }
-            </td>
-            <td>
                 @if (item.Finition.Modele?.Marque != null)
                 {
                     @Html.DisplayFor(modelItem => item.Finition.Modele.Marque.LibelleMarque)
+                }
+            </td>
+            <td>
+                @if (item.Finition.Modele != null)
+                {
+                    @Html.DisplayFor(modelItem => item.Finition.Modele.LibelleModele)
                 }
             </td>
             <td>
@@ -85,7 +85,8 @@
                 @Html.DisplayFor(modelItem => item.PrixDeVente)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DateMisEnVente)
+                @* @Html.DisplayFor(modelItem => item.DateMisEnVente) *@
+                @Convert.ToDateTime(item.DateMisEnVente).ToString("dd/MM/yyyy")
             </td>
             @if (User.IsInRole("Admin"))
             {
@@ -103,7 +104,7 @@
                     <img src="@Url.Content(item.Image.Path)" width="144" height="96">
                 }               
             </td>
-            <td>                
+            <td class="form-group d-grid gap-2 col-6 mx-auto">                
                 @if (User.IsInRole("Admin")) 
                 {
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm">Consulter</a>
