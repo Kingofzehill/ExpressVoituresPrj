@@ -25,9 +25,11 @@ Instruction de démarrage (DEVELOPPEMENT) :
   
 - Créer la base de données depuis Visual Studio (_Menu : Affichage / Autres fenêtres / Console du gestionnaire de package_).
 L'application se connecte à deux Bases de données via les connections string suivantes (fichier appsettings.json) :
-      - Connection String de la base de données des Identités Utilisateurs : "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=aspnet-ExpressVoitures-04774a4e-5a92-4d58-b43e-bbf6a2f33fc3;Trusted_Connection=True;MultipleActiveResultSets=true"
+      - Connection String de la base de données des Identités Utilisateurs :
+_"DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=aspnet-ExpressVoitures-04774a4e-5a92-4d58-b43e-bbf6a2f33fc3;Trusted_Connection=True;MultipleActiveResultSets=true"_
 La base de données _aspnet-ExpressVoitures-04774a4e-5a92-4d58-b43e-bbf6a2f33fc3_ contient les identités utilisateurs (administrateur), voir table dbo.AspNetUsers.
-      - Connection String de la base de données des Véhicules : "ExpressVoituresContext": "Server=(localdb)\\mssqllocaldb;Database=ExpressVoituresContext-fef897d5-e94d-4717-98f9-dc396e42519f;Trusted_Connection=True;MultipleActiveResultSets=true"
+      - Connection String de la base de données des Véhicules :
+_"ExpressVoituresContext": "Server=(localdb)\\mssqllocaldb;Database=ExpressVoituresContext-fef897d5-e94d-4717-98f9-dc396e42519f;Trusted_Connection=True;MultipleActiveResultSets=true"_
 La base de données _ExpressVoituresContext-fef897d5-e94d-4717-98f9-dc396e42519f_ contient les données Véhicules de l'application.
       
 - Dans la console du gestionnaire de package, taper les commandes suivantes pour créer la base des données Véhicules :      
