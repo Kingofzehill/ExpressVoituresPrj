@@ -22,7 +22,6 @@ Instruction d'installation :
   
 Instruction de démarrage (DEVELOPPEMENT) :
 - Ouvrir le projet dans Visual Studio (fichier : ExpressVoitures.sln).
-  
 - Créer la base de données depuis Visual Studio (_Menu : Affichage / Autres fenêtres / Console du gestionnaire de package_).
 L'application se connecte à deux Bases de données via les connections string suivantes (fichier appsettings.json) :
       - Connection String de la base de données des Identités Utilisateurs :
